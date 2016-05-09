@@ -10,37 +10,76 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.josemorente.database.SQLDatabaseConnection;
 
 /**
  *
- * @author José Morentes
+ * @author José Morente
  */
 public class VentanaWindows extends Application {
+    private VBox vBoxPrincipal;
+    private MenuBar menuBar;
+    private Menu menuArchivo;
+    private Menu menuUsuario;
+    private MenuItem menuItemConectar;
+    private MenuItem menuItemDesconectar;
+    private MenuItem menuItemSalir;
+    private Stage stage;
     
     @Override
-    public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
+    public void start(Stage stagePrimary) {
+        stage = stagePrimary;
+        vBoxPrincipal = new VBox();
+        
+        Button button = new Button("Probar Conexión");
+        button.setOnAction(new EventHandler <ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
+                SQLDatabaseConnection.getInstance().conectar();
             }
         });
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+        vBoxPrincipal = new VBox();
+        vBoxPrincipal.getChildren().addAll(getMenuBar());
         
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene;
+        scene = new Scene(vBoxPrincipal, 500, 500);
         
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setTitle("FXColegio");
+        stage.setScene(scene);
+        stage.show();
+        
     }
-
+    
+    private MenuBar getMenuBar() {
+        menuBar = new MenuBar();
+        
+        menuArchivo = new Menu("_Archivo");
+        
+        menuUsuario = new Menu("_Usuario");
+        
+        menuItemConectar = new MenuItem("_Conectar");
+        
+        menuItemDesconectar = new MenuItem("_Desconectar");
+        menuUsuario.getItems().addAll(menuItemConectar, menuItemDesconectar);
+        
+        menuItemSalir = new MenuItem("_Salir");
+        menuItemSalir.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.close();
+            }
+        });
+        menuArchivo.getItems().addAll(menuUsuario, menuItemSalir);
+        menuBar.getMenus().add(menuArchivo);
+        return menuBar;
+    }
+    
     /**
      * @param args the command line arguments
      */
