@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fxcolegio;
+package org.josemorente.principal;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  *
  * @author José Morentes
  */
-public class FXColegio extends Application {
+public class VentanaWindows extends Application {
     
     @Override
     public void start(Stage primaryStage) {
