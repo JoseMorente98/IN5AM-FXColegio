@@ -40,12 +40,12 @@ public class VentanaWindows extends Application {
         button.setOnAction(new EventHandler <ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                SQLDatabaseConnection.getInstance().conectar();
+                System.out.println(SQLDatabaseConnection.getInstance().query("SELECT * FROM Usuario;"));
             }
         });
         
         vBoxPrincipal = new VBox();
-        vBoxPrincipal.getChildren().addAll(getMenuBar());
+        vBoxPrincipal.getChildren().addAll(getMenuBar(), button);
         
         Scene scene;
         scene = new Scene(vBoxPrincipal, 500, 500);

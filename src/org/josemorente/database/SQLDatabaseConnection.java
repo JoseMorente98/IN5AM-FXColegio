@@ -15,11 +15,14 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author José Morentes
+ * @author José Morente
  */
 public class SQLDatabaseConnection {
     public static SQLDatabaseConnection instance;
     private String connectionString;
+    private Connection connection;
+    private Statement statement;
+    private ResultSet resultSet;
             
     private SQLDatabaseConnection() {
         
@@ -32,51 +35,50 @@ public class SQLDatabaseConnection {
         return instance;
     }
     
-    public void conectar() {
+    private void conectar() {
         connectionString = "jdbc:sqlserver://localhost:1433;"
-            +"database=localhost;"
+            +"database=FXColegio;"
             +"user=developer;"
             +"password=developer;"
-            +"encryp=true;"
+            +"encryp=false;"
             +"trustServerCertificate=false;"
             +"hostNameInCertificate=*.database.windows.net;"
             +"loginTimeout=30;";
-            
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
         
         try {
             connection = DriverManager.getConnection(connectionString);
-            
-            String selectSql;
-            selectSql = "SELECT * FROM Profesor;";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(selectSql);
-            
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(2) + " "
-                    + resultSet.getString(3));
-            }
-            
             } catch (SQLException ex) {
             Logger.getLogger(SQLDatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (resultSet != null) try {
-                resultSet.close();
-            } catch (Exception e){
-                
-            }
-            if (statement != null) try {
-                statement.close();
-            } catch (Exception e){
-                
-            }
-            if (connection != null) try {
-                connection.close();
-            } catch (Exception e){
-                
-            }
         }
     }
+    
+    private void desconectar() {
+        if (resultSet != null) try {
+            resultSet.close();
+        } catch (Exception e){}
+        if (statement != null) try {
+            statement.close();
+        } catch (Exception e){}
+        if (connection != null) try {
+            connection.close();
+        } catch (Exception e){}
+        
+    }
+    
+    public ResultSet query(String query) {
+        conectar();
+        try {
+            String selectSql = "SELECT * FROM Usuario;";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            desconectar();
+        } catch (SQLException ex) {
+            Logger.getLogger(SQLDatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            
+        }
+        return resultSet;
+    }
+    
+    
 }
