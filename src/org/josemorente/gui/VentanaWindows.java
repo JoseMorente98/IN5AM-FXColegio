@@ -13,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.josemorente.database.SQLDatabaseConnection;
@@ -30,11 +32,14 @@ public class VentanaWindows extends Application {
     private MenuItem menuItemDesconectar;
     private MenuItem menuItemSalir;
     private Stage stage;
+    private TabPane tabPane;
+    private Tab tabUsuario;
     
     @Override
     public void start(Stage stagePrimary) {
         stage = stagePrimary;
         vBoxPrincipal = new VBox();
+        vBoxPrincipal.getChildren().addAll(getMenuBar(), getTabPane());
         
         Button button = new Button("Probar Conexión");
         button.setOnAction(new EventHandler <ActionEvent>() {
@@ -44,13 +49,10 @@ public class VentanaWindows extends Application {
             }
         });
         
-        vBoxPrincipal = new VBox();
-        vBoxPrincipal.getChildren().addAll(getMenuBar(), button);
-        
         Scene scene;
         scene = new Scene(vBoxPrincipal, 500, 500);
         
-        stage.setTitle("FXColegio");
+        stage.setTitle("FXColegio v. 1.0.0.0 ");
         stage.setScene(scene);
         stage.show();
         
@@ -78,6 +80,16 @@ public class VentanaWindows extends Application {
         menuArchivo.getItems().addAll(menuUsuario, menuItemSalir);
         menuBar.getMenus().add(menuArchivo);
         return menuBar;
+    }
+    
+    public TabPane getTabPane() {
+        tabPane = new TabPane();
+        
+        tabUsuario = new Tab("Usuarios");
+        tabUsuario.setContent(CRUDUsuario.getInstance().gethBoxCRUD());
+        
+        tabPane.getTabs().add(tabUsuario);
+        return tabPane;
     }
     
     /**
