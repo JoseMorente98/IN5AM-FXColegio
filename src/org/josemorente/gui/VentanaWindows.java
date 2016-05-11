@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.josemorente.principal;
+package org.josemorente.gui;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

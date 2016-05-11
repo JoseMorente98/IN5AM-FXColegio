@@ -9,15 +9,26 @@ package org.josemorente.controlador;
  *
  * @author José Morente
  */
-public class ControladorCarrera {
-    public static ControladorCarrera instance;
+public class ControladorUsuario {
+    public static ControladorUsuario instance;
+    
+    private ControladorUsuario() {
+    }
 
-    public static ControladorCarrera getInstance() {
+    public static ControladorUsuario getInstance() {
         if (instance == null) {
-            instance = new ControladorCarrera();
+            instance = new ControladorUsuario();
         }
         return instance;
     }
+    
+    //Agregar Usuario
+    
+    //Mostrar Usuarios
+    
+    //Modificar Usuarios
+    
+    //Eliminar Usuarios
     
     
 }
