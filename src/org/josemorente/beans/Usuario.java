@@ -11,7 +11,7 @@ package org.josemorente.beans;
  */
 public class Usuario {
     private int idUsuario;
-    private boolean activo;
+    private boolean activo = false;
     private String usuario;
     private String password;
 

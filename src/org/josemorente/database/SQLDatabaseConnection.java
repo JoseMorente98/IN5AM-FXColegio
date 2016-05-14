@@ -7,6 +7,7 @@ package org.josemorente.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,6 +24,7 @@ public class SQLDatabaseConnection {
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
+    private PreparedStatement preparedStatement;
             
     private SQLDatabaseConnection() {
         
@@ -65,20 +67,28 @@ public class SQLDatabaseConnection {
         
     }
     
-    public ResultSet query(String query) {
+   public ResultSet query(String query) {
         conectar();
         try {
-            String selectSql = "SELECT * FROM Usuario;";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
-            desconectar();
         } catch (SQLException ex) {
             Logger.getLogger(SQLDatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            
         }
         return resultSet;
     }
     
-    
+    public void executeQuery(String query) {
+        conectar();
+        try {
+            preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.execute();
+            resultSet = preparedStatement.getGeneratedKeys();
+            while (resultSet.next()) {
+                System.out.println("Generated: " +  resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SQLDatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -22,6 +22,7 @@ public class ControladorUsuario {
     private ArrayList<Usuario> arrayListUsuario;
     
     private ControladorUsuario() {
+        this.arrayListUsuario = new ArrayList<>();
     }
 
     public static ControladorUsuario getInstance() {
@@ -34,7 +35,7 @@ public class ControladorUsuario {
     //Mostrar Usuario
     public ArrayList<Usuario> getArrayList() {
         arrayListUsuario.clear();
-        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Usuarios");
+        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Usuario");
         try {
             while(resultSet.next()) {
                 Usuario usuario = new Usuario();
@@ -52,8 +53,9 @@ public class ControladorUsuario {
     }
     
     //Agregar Usuario
-    
-    //Mostrar Usuarios
+    public void agregarUsuario(boolean activo, String usuario, String password) {
+        SQLDatabaseConnection.getInstance().executeQuery("INSERT INTO Usuario(activo, usuario, password) VALUES('" + activo + " ',' " + usuario + " ',' " + password + " '); ");
+    }
     
     //Modificar Usuarios
     

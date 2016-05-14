@@ -5,19 +5,31 @@
  */
 package org.josemorente.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import org.josemorente.beans.Usuario;
 import org.josemorente.controlador.ControladorUsuario;
 
@@ -29,7 +41,7 @@ public class CRUDUsuario {
     public static CRUDUsuario instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
-    private Text textTitle;
+    private Text textTitulo;
     private HBox hBoxBuscar;
     private TextField textFieldBuscar;
     private Button buttonBuscar;
@@ -60,7 +72,7 @@ public class CRUDUsuario {
         hBoxCRUD.getChildren().add(gridPane);
     }
 
-    public HBox gethBoxCRUD() {
+    public HBox gethBoxCRUD() {  
         hBoxCRUD = new HBox();
         
         gridPane = new GridPane();
@@ -68,8 +80,8 @@ public class CRUDUsuario {
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
-        textTitle = new Text("Usuarios");
-        gridPane.add(textTitle, 0, 0);
+        textTitulo = new Text("Usuarios");
+        gridPane.add(textTitulo, 0, 0);
         
         hBoxBuscar = new HBox(10);
         
@@ -93,7 +105,8 @@ public class CRUDUsuario {
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                hBoxCRUD.getChildren().addAll(gridPane, CrearUsuario.getInstance().getGridPane());
             }
         });
         
@@ -117,7 +130,7 @@ public class CRUDUsuario {
         buttonActualizar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                actualizarTableViewItems();
             }
         });
         
@@ -147,6 +160,7 @@ public class CRUDUsuario {
         tableView = new TableView<>(observableList);
         tableView.getColumns().addAll(tableColumnIdUsuario, tableColumnActivo, 
                 tableColumnUsuario, tableColumnPassword);
+        
         gridPane.add(tableView, 0, 3, 2, 1);
         
         hBoxCRUD.getChildren().add(gridPane);
@@ -162,4 +176,86 @@ public class CRUDUsuario {
     public void actualizarObservableList() {
         observableList = FXCollections.observableList(ControladorUsuario.getInstance().getArrayList());
     }
+}
+
+class CrearUsuario {
+    private static CrearUsuario instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelActivo;
+    private CheckBox checkBoxActivo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelPassword;
+    private PasswordField passwordFieldPassword;
+    private Button buttonAgregar;
+    private Button buttonCerrar;
+    
+    
+    private CrearUsuario() {
+    }
+
+    public static CrearUsuario getInstance() {
+        if (instance == null) {
+            instance = new CrearUsuario();
+        }
+        return instance;
+    }
+    
+    public GridPane getGridPane() {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Agregar Usuario");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelActivo = new Label("Activo");
+        gridPane.add(labelActivo, 0, 1);
+        
+        checkBoxActivo = new CheckBox();
+        gridPane.add(checkBoxActivo, 1, 1, 2, 1);
+        
+        labelNombre = new Label("Usuario :");
+        gridPane.add(labelNombre, 0, 2);
+        
+        textFieldNombre = new TextField();
+        gridPane.add(textFieldNombre , 1, 2, 2, 1);
+        
+        labelPassword = new Label("Contraseña :");
+        gridPane.add(labelPassword, 0, 3);
+        
+        passwordFieldPassword = new PasswordField();
+        gridPane.add(passwordFieldPassword, 1, 3, 2, 1);
+        
+        buttonAgregar = new Button("Agregar");
+        buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorUsuario.getInstance().agregarUsuario(checkBoxActivo.selectedProperty().getValue(), 
+                        textFieldNombre.getText(), 
+                        passwordFieldPassword.getText());
+                CRUDUsuario.getInstance().reiniciarhBoxCRUD();
+                CRUDUsuario.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDUsuario.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonAgregar, 1, 4);
+        gridPane.add(buttonCerrar, 2, 4, 2, 1);
+        return gridPane;
+    }
+
+    
+    
+    
 }
