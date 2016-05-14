@@ -50,7 +50,7 @@ public class VentanaWindows extends Application {
         });
         
         Scene scene;
-        scene = new Scene(vBoxPrincipal, 500, 500);
+        scene = new Scene(vBoxPrincipal, 950, 600);
         
         stage.setTitle("FXColegio v. 1.0.0.0 ");
         stage.setScene(scene);

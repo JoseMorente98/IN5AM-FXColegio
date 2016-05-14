@@ -52,7 +52,7 @@ public class SQLDatabaseConnection {
         }
     }
     
-    private void desconectar() {
+    public void desconectar() {
         if (resultSet != null) try {
             resultSet.close();
         } catch (Exception e){}

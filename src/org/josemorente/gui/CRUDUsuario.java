@@ -5,18 +5,25 @@
  */
 package org.josemorente.gui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import org.josemorente.beans.Usuario;
+import org.josemorente.controlador.ControladorUsuario;
 
 /**
  *
- * @author José Morentes
+ * @author José Morente
  */
 public class CRUDUsuario {
     public static CRUDUsuario instance;
@@ -31,8 +38,14 @@ public class CRUDUsuario {
     private Button buttonModificar;
     private Button buttonEliminar;
     private Button buttonActualizar;
+    private TableView tableView;
+    private TableColumn<Usuario, Integer> tableColumnIdUsuario;
+    private TableColumn<Usuario, Boolean> tableColumnActivo;
+    private TableColumn<Usuario, String> tableColumnUsuario;
+    private TableColumn<Usuario, String> tableColumnPassword;
+    private ObservableList observableList;
     
-    public CRUDUsuario() {
+    private CRUDUsuario() {
     }
 
     public static CRUDUsuario getInstance() {
@@ -111,11 +124,42 @@ public class CRUDUsuario {
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar);
         gridPane.add(hBoxButtons, 0, 2);
         
+        tableColumnIdUsuario = new TableColumn<>();
+        tableColumnIdUsuario.setText("ID Usuario");
+        tableColumnIdUsuario.setCellValueFactory(new PropertyValueFactory<>("idUsuario") );
+        tableColumnIdUsuario.setMinWidth(100);
+        
+        tableColumnActivo = new TableColumn<>();
+        tableColumnActivo.setText("Activo");
+        tableColumnActivo.setCellValueFactory(new PropertyValueFactory<>("activo"));
+        tableColumnActivo.setMinWidth(50);
+        
+        tableColumnUsuario = new TableColumn<>();
+        tableColumnUsuario.setText("Usuarios");
+        tableColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
+        tableColumnUsuario.setMinWidth(200);
+        
+        tableColumnPassword = new TableColumn<>();
+        tableColumnPassword.setText("Password");
+        tableColumnPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        tableColumnPassword.setMinWidth(200);
+        
+        tableView = new TableView<>(observableList);
+        tableView.getColumns().addAll(tableColumnIdUsuario, tableColumnActivo, 
+                tableColumnUsuario, tableColumnPassword);
+        gridPane.add(tableView, 0, 3, 2, 1);
+        
         hBoxCRUD.getChildren().add(gridPane);
         
         return hBoxCRUD;
     }
     
-    
-    
+    public void actualizarTableViewItems() {
+        actualizarObservableList();
+        tableView.setItems(observableList);
+    }
+       
+    public void actualizarObservableList() {
+        observableList = FXCollections.observableList(ControladorUsuario.getInstance().getArrayList());
+    }
 }
