@@ -33,6 +33,13 @@ public class VentanaWindows extends Application {
     private Tab tabProfesor;
     private Tab tabMateria;
     private Tab tabCarrera;
+
+    public static VentanaWindows getInstance() {
+        if (instance == null) {
+            instance = new VentanaWindows();
+        }
+        return instance;
+    }
     
     private MenuBar getMenuBar() {
         menuBar = new MenuBar();
@@ -70,9 +77,9 @@ public class VentanaWindows extends Application {
         return tabPane;
     }
     
-    @Override
-    public void start(Stage stagePrimary) {
+    public void Principal(Stage stagePrimary) {
         stage = stagePrimary;
+        
         vBoxPrincipal = new VBox();
         vBoxPrincipal.getChildren().addAll(getMenuBar(), getTabPane());
         
@@ -82,7 +89,23 @@ public class VentanaWindows extends Application {
         stage.setTitle("FXColegio v. 1.0.0.0 ");
         stage.setScene(scene);
         stage.show();
+    }
+    
+    @Override
+    public void start(Stage stagePrimary) {
+        stage = stagePrimary;
+        Login.getInstance().Login(stagePrimary);
+        /*
+        vBoxPrincipal = new VBox();
+        vBoxPrincipal.getChildren().addAll(getMenuBar(), getTabPane());
         
+        Scene scene;
+        scene = new Scene(vBoxPrincipal, 950, 600);
+        
+        stage.setTitle("FXColegio v. 1.0.0.0 ");
+        stage.setScene(scene);
+        stage.show();
+        */
     }
     
     /**
