@@ -5,9 +5,11 @@
  */
 package org.josemorente.beans;
 
+import java.util.Date;
+
 /**
  *
- * @author José Morentes
+ * @author José Morente
  */
 public class Profesor {
      private int idProfesor;
@@ -16,10 +18,9 @@ public class Profesor {
     private String dpi;
     private String telefono;
     private String direccion;
-    private String fechaNacimiento;
+    private Date fechaNacimiento;
     
-    public Profesor() {
-        
+    public Profesor() {    
     }
 
     public int getIdProfesor() {
@@ -70,13 +71,12 @@ public class Profesor {
         this.direccion = direccion;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
     
 }

@@ -32,7 +32,13 @@ public class ControladorUsuario {
         return instance;
     }
     
-    //Mostrar Usuario
+    
+    //Agregar Usuario
+    public void agregarUsuario(boolean activo, String usuario, String password) {
+        SQLDatabaseConnection.getInstance().executeQuery("INSERT INTO Usuario(activo, usuario, password) VALUES('" + activo + " ',' " + usuario + " ',' " + password + " '); ");
+    }
+    
+     //Mostrar Usuario
     public ArrayList<Usuario> getArrayList() {
         arrayListUsuario.clear();
         ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Usuario");
@@ -52,14 +58,21 @@ public class ControladorUsuario {
         return arrayListUsuario;
     }
     
-    //Agregar Usuario
-    public void agregarUsuario(boolean activo, String usuario, String password) {
-        SQLDatabaseConnection.getInstance().executeQuery("INSERT INTO Usuario(activo, usuario, password) VALUES('" + activo + " ',' " + usuario + " ',' " + password + " '); ");
+    //Modificar Usuarios
+    public void modificarUsuario(boolean activo, String usuario, String password, int idUsuario) {
+        String query;
+        if (activo) {
+            query = "UPDATE Usuario SET activo = 1, usuario='" + usuario + "', password='" + password + "' WHERE idUsuario = " + idUsuario + ";";
+        } else{
+            query = "UPDATE Usuario SET activo = 1, usuario='" + usuario + "', password='" + password + "' WHERE idUsuario = " + idUsuario + ";";
+        }
+        SQLDatabaseConnection.getInstance().executeQuery(query);
     }
     
-    //Modificar Usuarios
-    
     //Eliminar Usuarios
-    
+    public void eliminarUsuario(int idUsuario) {
+        String query = "DELETE FROM Usuario WHERE idUsuario = " +idUsuario;
+        SQLDatabaseConnection.getInstance().executeQuery(query);
+    }
     
 }

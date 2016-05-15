@@ -7,7 +7,7 @@ package org.josemorente.beans;
 
 /**
  *
- * @author José Morentes
+ * @author José Morente
  */
 public class Carrera {
     private int idCarrera;

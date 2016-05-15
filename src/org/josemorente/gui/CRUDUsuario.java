@@ -5,31 +5,24 @@
  */
 package org.josemorente.gui;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import org.josemorente.beans.Usuario;
 import org.josemorente.controlador.ControladorUsuario;
 
@@ -50,7 +43,7 @@ public class CRUDUsuario {
     private Button buttonModificar;
     private Button buttonEliminar;
     private Button buttonActualizar;
-    private TableView tableView;
+    private TableView<Usuario> tableView;
     private TableColumn<Usuario, Integer> tableColumnIdUsuario;
     private TableColumn<Usuario, Boolean> tableColumnActivo;
     private TableColumn<Usuario, String> tableColumnUsuario;
@@ -81,6 +74,8 @@ public class CRUDUsuario {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Usuarios");
+        textTitulo.setFill(Color.DARKBLUE);
+        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 20));
         gridPane.add(textTitulo, 0, 0);
         
         hBoxBuscar = new HBox(10);
@@ -89,6 +84,7 @@ public class CRUDUsuario {
         textFieldBuscar.setPromptText("Buscar Usuario");
         
         buttonBuscar = new Button("Buscar");
+        buttonBuscar.setStyle("-fx-base: rgb(0,0,132);");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -102,6 +98,7 @@ public class CRUDUsuario {
         hBoxButtons = new HBox(10);
         
         buttonNuevo = new Button("Nuevo");
+        buttonNuevo.setStyle("-fx-base: rgb(0,120,0);");
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -111,22 +108,35 @@ public class CRUDUsuario {
         });
         
         buttonModificar = new Button("Modificar");
+        buttonModificar.setStyle("-fx-base : rgb(85,210,10);");// Verde Limon
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                if (tableView.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, ModificarUsuario.getInstance().getGridPane((Usuario) tableView.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
             }
         });
         
         buttonEliminar = new Button("Eliminar");
+        buttonEliminar.setStyle("-fx-base : rgb(200,0,0);");//Rojo Oscuro
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if (tableView.getSelectionModel().getSelectedItems() != null) {
+                    ControladorUsuario.getInstance().eliminarUsuario(tableView.getSelectionModel().getSelectedItem().getIdUsuario());
+                    actualizarTableViewItems();
+                } else {
+                    
+                }
             }
         });
         
         buttonActualizar = new Button("Actualizar");
+        buttonActualizar.setStyle("-fx-base : rgb(0,128,192);"); //Azul Marino
         buttonActualizar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -140,7 +150,7 @@ public class CRUDUsuario {
         tableColumnIdUsuario = new TableColumn<>();
         tableColumnIdUsuario.setText("ID Usuario");
         tableColumnIdUsuario.setCellValueFactory(new PropertyValueFactory<>("idUsuario") );
-        tableColumnIdUsuario.setMinWidth(100);
+        tableColumnIdUsuario.setMinWidth(50);
         
         tableColumnActivo = new TableColumn<>();
         tableColumnActivo.setText("Activo");
@@ -162,6 +172,7 @@ public class CRUDUsuario {
                 tableColumnUsuario, tableColumnPassword);
         
         gridPane.add(tableView, 0, 3, 2, 1);
+       
         
         hBoxCRUD.getChildren().add(gridPane);
         
@@ -222,12 +233,14 @@ class CrearUsuario {
         gridPane.add(labelNombre, 0, 2);
         
         textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombre de usuario");
         gridPane.add(textFieldNombre , 1, 2, 2, 1);
         
         labelPassword = new Label("Contraseña :");
         gridPane.add(labelPassword, 0, 3);
         
         passwordFieldPassword = new PasswordField();
+        passwordFieldPassword.setPromptText("Contraseña de usuario");
         gridPane.add(passwordFieldPassword, 1, 3, 2, 1);
         
         buttonAgregar = new Button("Agregar");
@@ -254,8 +267,88 @@ class CrearUsuario {
         gridPane.add(buttonCerrar, 2, 4, 2, 1);
         return gridPane;
     }
+ 
+}
 
+class ModificarUsuario{
+    public static ModificarUsuario instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelActivo;
+    private CheckBox checkBoxActivo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelPassword;
+    private PasswordField passwordFieldPassword;
+    private Button buttonModificar;
+    private Button buttonCerrar;
+
+    private ModificarUsuario() {
+    }
+
+    public static ModificarUsuario getInstance() {
+        if (instance == null) {
+            instance = new ModificarUsuario();
+        }
+        return instance;
+    }
     
-    
-    
+    public GridPane getGridPane(Usuario usuario){
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Modificar Usuario");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelActivo = new Label("Activo");
+        gridPane.add(labelActivo, 0, 1);
+        
+        checkBoxActivo = new CheckBox();
+        checkBoxActivo.selectedProperty().set(usuario.isActivo());
+        gridPane.add(checkBoxActivo, 1, 1, 2, 1);
+        
+        labelNombre = new Label("Usuario :");
+        gridPane.add(labelNombre, 0, 2);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombre de usuario");
+        textFieldNombre.setText(usuario.getUsuario());
+        gridPane.add(textFieldNombre , 1, 2, 2, 1);
+        
+        labelPassword = new Label("Contraseña :");
+        gridPane.add(labelPassword, 0, 3);
+        
+        passwordFieldPassword = new PasswordField();
+        passwordFieldPassword.setPromptText("Contraseña de usuario");
+        passwordFieldPassword.setText(usuario.getPassword());
+        gridPane.add(passwordFieldPassword, 1, 3, 2, 1);
+        
+        buttonModificar = new Button("Modificar");
+        buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorUsuario.getInstance().modificarUsuario(checkBoxActivo.selectedProperty().getValue(), 
+                        textFieldNombre.getText(), 
+                        passwordFieldPassword.getText(), 
+                        usuario.getIdUsuario());
+                CRUDUsuario.getInstance().reiniciarhBoxCRUD();
+                CRUDUsuario.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new  EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDUsuario.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonModificar, 1, 4);
+        gridPane.add(buttonCerrar, 2, 4, 2, 1);
+        return gridPane;
+    }
 }
