@@ -101,6 +101,7 @@ public class Login {
         Scene scene;
         scene = new Scene(vBoxPrincipal, 300, 400);
         
+        stage.setResizable(false);
         stage.setTitle("Login FXColegio");
         stage.setScene(scene);
         stage.show();
