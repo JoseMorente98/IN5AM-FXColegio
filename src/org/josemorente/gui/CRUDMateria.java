@@ -5,11 +5,13 @@
  */
 package org.josemorente.gui;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -20,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.josemorente.beans.Materia;
+import org.josemorente.controlador.ControladorMateria;
 
 /**
  *
@@ -42,7 +45,7 @@ public class CRUDMateria {
     private TableColumn<Materia, Integer> tableColumnIdMateria;
     private TableColumn<Materia, String> tableColumnNombre;
     private TableColumn<Materia, String> tableColumnDescripcion;
-    private ObservableList observableList;
+    private ObservableList<Materia> observableList;
     
     private CRUDMateria() {
     }
@@ -53,7 +56,12 @@ public class CRUDMateria {
         }
         return instance;
     }
-
+    
+    public void reiniciarhBoxCRUD() {
+        hBoxCRUD.getChildren().clear();
+        hBoxCRUD.getChildren().add(gridPane);
+    }
+     
     public HBox gethBoxCRUD() {
         hBoxCRUD = new HBox();
         
@@ -63,8 +71,8 @@ public class CRUDMateria {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Materias");
-        textTitulo.setFill(Color.DARKBLUE);
-        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 20));
+        textTitulo.setFill(Color.WHITESMOKE);
+        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 25));
         gridPane.add(textTitulo, 0, 0);
         
         hBoxBuscar = new HBox(10);
@@ -73,7 +81,7 @@ public class CRUDMateria {
         textFieldBuscar.setPromptText("Buscar Materia");
         
         buttonBuscar = new Button("Buscar");
-        buttonBuscar.setStyle("-fx-base: rgb(0,0,132);");
+        buttonBuscar.setStyle("-fx-base: rgb(17,71,138);");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -91,7 +99,8 @@ public class CRUDMateria {
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                hBoxCRUD.getChildren().addAll(gridPane, AgregarMateria.getInstance().getGridPane());
             }
         });
         
@@ -100,7 +109,12 @@ public class CRUDMateria {
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                if(tableViewMateria.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, ModificarMateria.getInstance().getGridPane((Materia) tableViewMateria.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
             }
         });
         
@@ -109,7 +123,10 @@ public class CRUDMateria {
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if(tableViewMateria.getSelectionModel().getSelectedItem() != null) {
+                    ControladorMateria.getInstance().eliminarMateria(tableViewMateria.getSelectionModel().getSelectedItem().getIdMateria());
+                    actualizarTableViewItems();
+                }
             }
         });
         
@@ -118,7 +135,7 @@ public class CRUDMateria {
         buttonActualizar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               // actualizarTableViewItems();
+                actualizarTableViewItems();
             }
         });
         
@@ -140,6 +157,7 @@ public class CRUDMateria {
         tableColumnDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         tableColumnDescripcion.setMinWidth(300);
         
+        actualizarObservableList();
         tableViewMateria = new TableView<>(observableList);
         tableViewMateria.getColumns().addAll(tableColumnIdMateria, tableColumnNombre,
                 tableColumnDescripcion);
@@ -151,6 +169,157 @@ public class CRUDMateria {
         return hBoxCRUD;
     }
     
-    
-    
+    public void actualizarTableViewItems() {
+        actualizarObservableList();
+        tableViewMateria.setItems(observableList);
+    }
+       
+    public void actualizarObservableList() {
+        observableList = FXCollections.observableArrayList(ControladorMateria.getInstance().getArrayListMateria());
+    }
+}
+
+class AgregarMateria {
+    private static AgregarMateria instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelDescripcion;
+    private TextField textFieldDescripcion;
+    private Button buttonAgregar;
+    private Button buttonCerrar;
+
+    private AgregarMateria() {
+    }
+
+    public static AgregarMateria getInstance() {
+        if (instance == null) {
+            instance = new AgregarMateria();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane() {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Agregar Materia");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombre :");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombre de Materia");
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelDescripcion = new Label("Descripción :");
+        gridPane.add(labelDescripcion, 0, 2);
+                
+        textFieldDescripcion = new TextField();
+        textFieldDescripcion.setPromptText("Descripción de Materia");
+        gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
+        
+        buttonAgregar = new Button("Agregar");
+        buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorMateria.getInstance().agregarMateria(textFieldNombre.getText(), 
+                        textFieldDescripcion.getText());
+                CRUDMateria.getInstance().reiniciarhBoxCRUD();
+                CRUDMateria.getInstance().actualizarTableViewItems();
+            }
+        });
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDMateria.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonAgregar, 1, 3);
+        gridPane.add(buttonCerrar, 2, 3 , 2, 1);
+        
+        return gridPane;
+    }
+}
+
+class ModificarMateria {
+    private static ModificarMateria instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelDescripcion;
+    private TextField textFieldDescripcion;
+    private Button buttonModificar;
+    private Button buttonCerrar;
+
+    private ModificarMateria() {
+    }
+
+    public static ModificarMateria getInstance() {
+        if (instance == null) {
+            instance = new ModificarMateria();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Materia materia) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Modificar Materia");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombre :");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombre de Materia");
+        textFieldNombre.setText(materia.getNombre());
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelDescripcion = new Label("Descripción :");
+        gridPane.add(labelDescripcion, 0, 2);
+                
+        textFieldDescripcion = new TextField();
+        textFieldDescripcion.setPromptText("Descripción de Materia");
+        textFieldDescripcion.setText(materia.getDescripcion());
+        gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
+        
+        buttonModificar = new Button("Modificar");
+        buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorMateria.getInstance().modificarMateria(textFieldNombre.getText(), 
+                        textFieldDescripcion.getText(), 
+                        materia.getIdMateria());
+                CRUDMateria.getInstance().reiniciarhBoxCRUD();
+                CRUDMateria.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDMateria.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonModificar, 1, 3);
+        gridPane.add(buttonCerrar, 2, 3 , 2, 1);
+        
+        return gridPane;
+    }
+
 }

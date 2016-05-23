@@ -5,19 +5,24 @@
  */
 package org.josemorente.beans;
 
+import java.util.Date;
+
 /**
  *
  * @author José Morentes
  */
 public class Alumno {
     private int idAlumno;
-    private int carnet;
     private String nombres;
     private String apellidos;
-    private String fechaNacimiento;
+    private Date fechaNacimiento;
+    private Grado grado;
+    private Carrera carrera;
+    private String jornada;
+    private int telefono;
+    private String direccion;
     
-    public Alumno() {
-        
+    private Alumno() {  
     }
 
     public int getIdAlumno() {
@@ -26,14 +31,6 @@ public class Alumno {
 
     public void setIdAlumno(int idAlumno) {
         this.idAlumno = idAlumno;
-    }
-
-    public int getCarnet() {
-        return carnet;
-    }
-
-    public void setCarnet(int carnet) {
-        this.carnet = carnet;
     }
 
     public String getNombres() {
@@ -52,13 +49,52 @@ public class Alumno {
         this.apellidos = apellidos;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
-    
+
+    public Grado getGrado() {
+        return grado;
+    }
+
+    public void setGrado(Grado grado) {
+        this.grado = grado;
+    }
+
+    public Carrera getCarrera() {
+        return carrera;
+    }
+
+    public void setCarrera(Carrera carrera) {
+        this.carrera = carrera;
+    }
+
+    public String getJornada() {
+        return jornada;
+    }
+
+    public void setJornada(String jornada) {
+        this.jornada = jornada;
+    }
+
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
 }

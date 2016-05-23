@@ -5,11 +5,13 @@
  */
 package org.josemorente.gui;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -20,6 +22,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.josemorente.beans.Carrera;
+import org.josemorente.controlador.ControladorCarrera;
+import org.josemorente.controlador.ControladorMateria;
 
 /**
  *
@@ -53,6 +57,11 @@ public class CRUDCarrera {
         }
         return instance;
     }
+    
+    public void reiniciarhBoxCRUD() {
+        hBoxCRUD.getChildren().clear();
+        hBoxCRUD.getChildren().add(gridPane);
+    }
 
     public HBox gethBoxCRUD() {
         hBoxCRUD = new HBox();
@@ -63,8 +72,8 @@ public class CRUDCarrera {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Carreras");
-        textTitulo.setFill(Color.DARKBLUE);
-        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 20));
+        textTitulo.setFill(Color.WHITESMOKE);
+        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 25));
         gridPane.add(textTitulo, 0, 0);
         
         hBoxBuscar = new HBox(10);
@@ -73,7 +82,7 @@ public class CRUDCarrera {
         textFieldBuscar.setPromptText("Buscar Carrera");
         
         buttonBuscar = new Button("Buscar");
-        buttonBuscar.setStyle("-fx-base: rgb(0,0,132);");
+        buttonBuscar.setStyle("-fx-base: rgb(17,71,138);");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -91,7 +100,8 @@ public class CRUDCarrera {
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                hBoxCRUD.getChildren().addAll(gridPane, AgregarCarrera.getInstance().getGridPane());
             }
         });
         
@@ -100,7 +110,12 @@ public class CRUDCarrera {
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                if (tableViewCarrera.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, ModificarCarrera.getInstance().getGridPane((Carrera) tableViewCarrera.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
             }
         });
         
@@ -109,7 +124,10 @@ public class CRUDCarrera {
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if (tableViewCarrera.getSelectionModel().getSelectedItem() != null) {
+                    ControladorCarrera.getInstance().eliminarCarrera(tableViewCarrera.getSelectionModel().getSelectedItem().getIdCarrera());
+                    actualizarTableViewItems();
+                }
             }
         });
         
@@ -140,6 +158,7 @@ public class CRUDCarrera {
         tableColumnDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         tableColumnDescripcion.setMinWidth(300);
         
+        actualizarObservableList();
         tableViewCarrera = new TableView<>(observableList);
         tableViewCarrera.getColumns().addAll(tableColumnIdCarrera, tableColumnNombre,
                 tableColumnDescripcion);
@@ -151,7 +170,155 @@ public class CRUDCarrera {
         return hBoxCRUD;
     }
     
+    public void actualizarTableViewItems() {
+        actualizarObservableList();
+        tableViewCarrera.setItems(observableList);
+    }
+       
+    public void actualizarObservableList() {
+        observableList = FXCollections.observableArrayList(ControladorCarrera.getInstance().getArrayList());
+    }
+}
+
+class AgregarCarrera {
+    private static AgregarCarrera instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelDescripcion;
+    private TextField textFieldDescripcion;
+    private Button buttonAgregar;
+    private Button buttonCerrar;
+
+    private AgregarCarrera() {
+    }
+
+    public static AgregarCarrera getInstance() {
+        if (instance == null) {
+            instance = new AgregarCarrera();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane() {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Agregar Carrera");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombre :");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombre de la Carrera");
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelDescripcion = new Label("Descripción :");
+        gridPane.add(labelDescripcion, 0, 2);
+                
+        textFieldDescripcion = new TextField();
+        textFieldDescripcion.setPromptText("Descripción de la Carrera");
+        gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
+        
+        buttonAgregar = new Button("Agregar");
+        buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorCarrera.getInstance().agregarCarrera(textFieldNombre.getText(), 
+                        textFieldDescripcion.getText());
+                CRUDCarrera.getInstance().reiniciarhBoxCRUD();
+                CRUDCarrera.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               CRUDCarrera.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonAgregar, 1, 3);
+        gridPane.add(buttonCerrar, 2, 3 , 2, 1);
+        return gridPane;
+    }
+}
+
+class ModificarCarrera {
+    private static ModificarCarrera instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelDescripcion;
+    private TextField textFieldDescripcion;
+    private Button buttonModificar;
+    private Button buttonCerrar;
+
+    private ModificarCarrera() {
+    }
+
+    public static ModificarCarrera getInstance() {
+        if (instance == null) {
+            instance = new ModificarCarrera();
+        }
+        return instance;
+    }
     
-    
-    
+    public GridPane getGridPane(Carrera carrera) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Modificar Carrera");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombre :");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombre de Carrera");
+        textFieldNombre.setText(carrera.getNombre());
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelDescripcion = new Label("Descripción :");
+        gridPane.add(labelDescripcion, 0, 2);
+                
+        textFieldDescripcion = new TextField();
+        textFieldDescripcion.setPromptText("Descripción de Carrera");
+        textFieldDescripcion.setText(carrera.getDescripcion());
+        gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
+        
+        buttonModificar = new Button("Modificar");
+        buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorCarrera.getInstance().modificarCarrera(textFieldNombre.getText(), 
+                        textFieldDescripcion.getText(), 
+                        carrera.getIdCarrera());
+                CRUDCarrera.getInstance().reiniciarhBoxCRUD();
+                CRUDCarrera.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDCarrera.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonModificar, 1, 3);
+        gridPane.add(buttonCerrar, 2, 3 , 2, 1);
+        return gridPane;
+    }
 }

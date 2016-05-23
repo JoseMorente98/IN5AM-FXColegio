@@ -47,8 +47,8 @@ public class CRUDUsuario {
     private TableColumn<Usuario, Integer> tableColumnIdUsuario;
     private TableColumn<Usuario, Boolean> tableColumnActivo;
     private TableColumn<Usuario, String> tableColumnUsuario;
-    private TableColumn<Usuario, String> tableColumnPassword;
-    private ObservableList observableList;
+    private TableColumn<Usuario, String> tableColumnClave;
+    private ObservableList<Usuario> observableList;
     
     private CRUDUsuario() {
     }
@@ -74,8 +74,8 @@ public class CRUDUsuario {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Usuarios");
-        textTitulo.setFill(Color.DARKBLUE);
-        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 20));
+        textTitulo.setFill(Color.WHITESMOKE);
+        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 25));
         gridPane.add(textTitulo, 0, 0);
         
         hBoxBuscar = new HBox(10);
@@ -84,7 +84,7 @@ public class CRUDUsuario {
         textFieldBuscar.setPromptText("Buscar Usuario");
         
         buttonBuscar = new Button("Buscar");
-        buttonBuscar.setStyle("-fx-base: rgb(0,0,132);");
+        buttonBuscar.setStyle("-fx-base: rgb(17,71,138);");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -129,8 +129,6 @@ public class CRUDUsuario {
                 if (tableView.getSelectionModel().getSelectedItems() != null) {
                     ControladorUsuario.getInstance().eliminarUsuario(tableView.getSelectionModel().getSelectedItem().getIdUsuario());
                     actualizarTableViewItems();
-                } else {
-                    
                 }
             }
         });
@@ -162,18 +160,18 @@ public class CRUDUsuario {
         tableColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
         tableColumnUsuario.setMinWidth(200);
         
-        tableColumnPassword = new TableColumn<>();
-        tableColumnPassword.setText("Password");
-        tableColumnPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
-        tableColumnPassword.setMinWidth(200);
+        tableColumnClave = new TableColumn<>();
+        tableColumnClave.setText("Password");
+        tableColumnClave.setCellValueFactory(new PropertyValueFactory<>("password"));
+        tableColumnClave.setMinWidth(200);
         
+        actualizarObservableList();
         tableView = new TableView<>(observableList);
         tableView.getColumns().addAll(tableColumnIdUsuario, tableColumnActivo, 
-                tableColumnUsuario, tableColumnPassword);
+                tableColumnUsuario, tableColumnClave);
         
         gridPane.add(tableView, 0, 3, 2, 1);
-       
-        
+
         hBoxCRUD.getChildren().add(gridPane);
         
         return hBoxCRUD;
@@ -185,7 +183,7 @@ public class CRUDUsuario {
     }
        
     public void actualizarObservableList() {
-        observableList = FXCollections.observableList(ControladorUsuario.getInstance().getArrayList());
+        observableList = FXCollections.observableArrayList(ControladorUsuario.getInstance().getArrayList());
     }
 }
 
@@ -198,7 +196,7 @@ class CrearUsuario {
     private Label labelNombre;
     private TextField textFieldNombre;
     private Label labelPassword;
-    private PasswordField passwordFieldPassword;
+    private PasswordField passwordFieldClave;
     private Button buttonAgregar;
     private Button buttonCerrar;
     
@@ -221,6 +219,8 @@ class CrearUsuario {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Agregar Usuario");
+        textTitulo.setFill(Color.WHITESMOKE);
+        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 15));
         gridPane.add(textTitulo, 0, 0);
         
         labelActivo = new Label("Activo");
@@ -239,9 +239,9 @@ class CrearUsuario {
         labelPassword = new Label("Contraseña :");
         gridPane.add(labelPassword, 0, 3);
         
-        passwordFieldPassword = new PasswordField();
-        passwordFieldPassword.setPromptText("Contraseña de usuario");
-        gridPane.add(passwordFieldPassword, 1, 3, 2, 1);
+        passwordFieldClave = new PasswordField();
+        passwordFieldClave.setPromptText("Contraseña de usuario");
+        gridPane.add(passwordFieldClave, 1, 3, 2, 1);
         
         buttonAgregar = new Button("Agregar");
         buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
@@ -249,7 +249,7 @@ class CrearUsuario {
             public void handle(ActionEvent event) {
                 ControladorUsuario.getInstance().agregarUsuario(checkBoxActivo.selectedProperty().getValue(), 
                         textFieldNombre.getText(), 
-                        passwordFieldPassword.getText());
+                        passwordFieldClave.getText());
                 CRUDUsuario.getInstance().reiniciarhBoxCRUD();
                 CRUDUsuario.getInstance().actualizarTableViewItems();
             }
@@ -279,7 +279,7 @@ class ModificarUsuario{
     private Label labelNombre;
     private TextField textFieldNombre;
     private Label labelPassword;
-    private PasswordField passwordFieldPassword;
+    private PasswordField passwordFieldClave;
     private Button buttonModificar;
     private Button buttonCerrar;
 
@@ -301,6 +301,8 @@ class ModificarUsuario{
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Modificar Usuario");
+        textTitulo.setFill(Color.WHITESMOKE);
+        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 15));
         gridPane.add(textTitulo, 0, 0);
         
         labelActivo = new Label("Activo");
@@ -321,10 +323,10 @@ class ModificarUsuario{
         labelPassword = new Label("Contraseña :");
         gridPane.add(labelPassword, 0, 3);
         
-        passwordFieldPassword = new PasswordField();
-        passwordFieldPassword.setPromptText("Contraseña de usuario");
-        passwordFieldPassword.setText(usuario.getPassword());
-        gridPane.add(passwordFieldPassword, 1, 3, 2, 1);
+        passwordFieldClave = new PasswordField();
+        passwordFieldClave.setPromptText("Contraseña de usuario");
+        passwordFieldClave.setText(usuario.getPassword());
+        gridPane.add(passwordFieldClave, 1, 3, 2, 1);
         
         buttonModificar = new Button("Modificar");
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
@@ -332,7 +334,7 @@ class ModificarUsuario{
             public void handle(ActionEvent event) {
                 ControladorUsuario.getInstance().modificarUsuario(checkBoxActivo.selectedProperty().getValue(), 
                         textFieldNombre.getText(), 
-                        passwordFieldPassword.getText(), 
+                        passwordFieldClave.getText(), 
                         usuario.getIdUsuario());
                 CRUDUsuario.getInstance().reiniciarhBoxCRUD();
                 CRUDUsuario.getInstance().actualizarTableViewItems();

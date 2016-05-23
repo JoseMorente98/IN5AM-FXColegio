@@ -16,7 +16,7 @@ public class Profesor {
     private String nombres;
     private String apellidos;
     private String dpi;
-    private String telefono;
+    private int telefono;
     private String direccion;
     private Date fechaNacimiento;
     
@@ -55,11 +55,11 @@ public class Profesor {
         this.dpi = dpi;
     }
 
-    public String getTelefono() {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
 
@@ -78,5 +78,5 @@ public class Profesor {
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
+
 }

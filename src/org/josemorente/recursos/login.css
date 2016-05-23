@@ -1,0 +1,20 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23-may-2016, 16:25:27
+    Author     : José Morente
+*/
+
+#stackPane-login {
+    -fx-background-image: url("../recursos/Login.png");
+    -fx-background-size: stretch;
+}
+
+#buttonLogin {
+    -fx-base: BLACK;
+    -fx-border-color: #e2e2e2;
+}
+

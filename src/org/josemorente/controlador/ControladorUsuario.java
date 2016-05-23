@@ -20,6 +20,8 @@ import org.josemorente.database.SQLDatabaseConnection;
 public class ControladorUsuario {
     public static ControladorUsuario instance;
     private ArrayList<Usuario> arrayListUsuario;
+    private Boolean autenticar = Boolean.FALSE ;
+    private Usuario autenticarUsuario;
     
     private ControladorUsuario() {
         this.arrayListUsuario = new ArrayList<>();
@@ -34,8 +36,9 @@ public class ControladorUsuario {
     
     
     //Agregar Usuario
-    public void agregarUsuario(boolean activo, String usuario, String password) {
-        SQLDatabaseConnection.getInstance().executeQuery("INSERT INTO Usuario(activo, usuario, password) VALUES('" + activo + " ',' " + usuario + " ',' " + password + " '); ");
+    public void agregarUsuario(boolean activo, String nombre, String clave) {
+        String query = "INSERT INTO Usuario(activo, nombre, clave) VALUES('" + activo + "','" + nombre + "','" + clave + "'); ";
+        SQLDatabaseConnection.getInstance().executeQuery(query);
     }
     
      //Mostrar Usuario
@@ -47,8 +50,8 @@ public class ControladorUsuario {
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(resultSet.getInt("idUsuario"));
                 usuario.setActivo(resultSet.getBoolean("activo"));
-                usuario.setUsuario(resultSet.getString("usuario"));
-                usuario.setPassword(resultSet.getString("password"));
+                usuario.setUsuario(resultSet.getString("nombre"));
+                usuario.setPassword(resultSet.getString("clave"));
                 arrayListUsuario.add(usuario);
             }
         } catch (SQLException ex) {
@@ -59,12 +62,12 @@ public class ControladorUsuario {
     }
     
     //Modificar Usuarios
-    public void modificarUsuario(boolean activo, String usuario, String password, int idUsuario) {
+    public void modificarUsuario(boolean activo, String nombre, String clave, int idUsuario) {
         String query;
         if (activo) {
-            query = "UPDATE Usuario SET activo = 1, usuario='" + usuario + "', password='" + password + "' WHERE idUsuario = " + idUsuario + ";";
+            query = "UPDATE Usuario SET activo = 1, nombre='" + nombre + "', clave='" + clave + "'WHERE idUsuario = " + idUsuario + ";";
         } else{
-            query = "UPDATE Usuario SET activo = 1, usuario='" + usuario + "', password='" + password + "' WHERE idUsuario = " + idUsuario + ";";
+            query = "UPDATE Usuario SET activo = 0, nombre='" + nombre + "', clave='" + clave + "'WHERE idUsuario = " + idUsuario + ";";
         }
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
@@ -73,6 +76,38 @@ public class ControladorUsuario {
     public void eliminarUsuario(int idUsuario) {
         String query = "DELETE FROM Usuario WHERE idUsuario = " +idUsuario;
         SQLDatabaseConnection.getInstance().executeQuery(query);
+    }
+    
+    //Login Usuario 
+    public Boolean autenticar(String nombre, String clave) {
+        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Usuario WHERE nombre = '" + nombre + "' AND clave = '" + clave + "';");
+        autenticar = Boolean.FALSE;
+        try {
+            while (resultSet.next()) {
+                Usuario u = new Usuario();
+                u.setIdUsuario(resultSet.getInt("idUsuario"));
+                u.setUsuario(resultSet.getString("nombre"));
+                u.setPassword(resultSet.getString("clave"));
+                this.autenticarUsuario = u;
+                autenticar = Boolean.TRUE;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return autenticar;
+    }
+
+    public Boolean getAutenticar() {
+        return autenticar;
+    }
+
+    public Usuario getAutenticarUsuario() {
+        return autenticarUsuario;
+    }
+    
+    public void desautenticar() {
+        this.autenticar = Boolean.FALSE;
+        this.autenticarUsuario = null;
     }
     
 }

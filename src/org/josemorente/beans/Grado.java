@@ -7,14 +7,14 @@ package org.josemorente.beans;
 
 /**
  *
- * @author José Morentes
+ * @author José Morente
  */
 public class Grado {
     private int idGrado;
     private String nombre;
+    private String descripcion;
     
     public Grado() {
-        
     }
 
     public int getIdGrado() {
@@ -32,5 +32,14 @@ public class Grado {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     
 }

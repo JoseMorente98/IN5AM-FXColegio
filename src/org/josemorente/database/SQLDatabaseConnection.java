@@ -11,8 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.josemorente.utilidades.PropertiesLoader;
 
 /**
  *
@@ -38,15 +40,15 @@ public class SQLDatabaseConnection {
     }
     
     private void conectar() {
-        connectionString = "jdbc:sqlserver://localhost:1433;"
-            +"database=FXColegio;"
-            +"user=developer;"
-            +"password=developer;"
+        HashMap<String, String> hashMap = PropertiesLoader.getInstance().load("conexion.properties");
+         connectionString = "jdbc:sqlserver://" + hashMap.get("serverName") + ":" + hashMap.get("portNumber") + ";"
+            + "databaseName=" + hashMap.get("databaseName")+ ";"
+            + "user=" + hashMap.get("user") + ";"
+            + "password=" + hashMap.get("password") + ";"
             +"encryp=false;"
             +"trustServerCertificate=false;"
             +"hostNameInCertificate=*.database.windows.net;"
             +"loginTimeout=30;";
-        
         try {
             connection = DriverManager.getConnection(connectionString);
             } catch (SQLException ex) {

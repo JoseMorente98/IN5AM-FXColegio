@@ -5,12 +5,17 @@
  */
 package org.josemorente.gui;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -21,13 +26,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.josemorente.beans.Profesor;
+import org.josemorente.controlador.ControladorProfesor;
 
 /**
  *
  * @author José Morentes
  */
 public class CRUDProfesor {
-    public static CRUDProfesor instance;
+    private static CRUDProfesor instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
     private Text textTitulo;
@@ -47,7 +53,7 @@ public class CRUDProfesor {
     private TableColumn<Profesor, String> tableColumnDpi;
     private TableColumn<Profesor, String> tableColumnDireccion;
     private TableColumn<Profesor, Integer> tableColumnTelefono;
-    private ObservableList observableList;
+    private ObservableList<Profesor> observableList;
     
     private CRUDProfesor() {
     }
@@ -57,6 +63,11 @@ public class CRUDProfesor {
             instance = new CRUDProfesor();
         }
         return instance;
+    }
+    
+    public void reiniciarhBoxCRUD() {
+        hBoxCRUD.getChildren().clear();
+        hBoxCRUD.getChildren().add(gridPane);
     }
 
     public HBox gethBoxCRUD() {
@@ -68,8 +79,8 @@ public class CRUDProfesor {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Profesores");
-        textTitulo.setFill(Color.DARKBLUE);
-        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 20));
+        textTitulo.setFill(Color.WHITESMOKE);
+        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 25));
         gridPane.add(textTitulo, 0, 0);
         
         hBoxBuscar = new HBox(10);
@@ -78,7 +89,7 @@ public class CRUDProfesor {
         textFieldBuscar.setPromptText("Buscar Profesor");
         
         buttonBuscar = new Button("Buscar");
-        buttonBuscar.setStyle("-fx-base: rgb(0,0,132);");
+        buttonBuscar.setStyle("-fx-base: rgb(17,71,138);");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -96,7 +107,8 @@ public class CRUDProfesor {
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                hBoxCRUD.getChildren().addAll(gridPane, CrearProfesor.getInstance().getGridPane());
             }
         });
         
@@ -105,7 +117,12 @@ public class CRUDProfesor {
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                if (tableViewProfesor.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, ModificarProfesor.getInstance().getGridPane((Profesor) tableViewProfesor.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
             }
         });
         
@@ -114,7 +131,10 @@ public class CRUDProfesor {
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if (tableViewProfesor.getSelectionModel().getSelectedItems() != null) {
+                    ControladorProfesor.getInstance().eliminar(tableViewProfesor.getSelectionModel().getSelectedItem().getIdProfesor());
+                    actualizarTableViewItems();
+                }
             }
         });
         
@@ -123,14 +143,13 @@ public class CRUDProfesor {
         buttonActualizar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               // actualizarTableViewItems();
+                actualizarTableViewItems();
             }
         });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar);
         gridPane.add(hBoxButtons, 0, 2);
-        
-        
+
         tableColumnIdProfesor = new TableColumn<>();
         tableColumnIdProfesor.setText("ID Profesor");
         tableColumnIdProfesor.setCellValueFactory(new PropertyValueFactory<>("idProfesor") );
@@ -155,21 +174,22 @@ public class CRUDProfesor {
         tableColumnDpi.setText("DPI");
         tableColumnDpi.setCellValueFactory(new PropertyValueFactory<>("dpi"));
         tableColumnDpi.setMinWidth(125);
+
+        tableColumnTelefono = new TableColumn<>();
+        tableColumnTelefono.setText("No. Teléfono");
+        tableColumnTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        tableColumnTelefono.setMinWidth(75);
         
         tableColumnDireccion = new TableColumn<>();
         tableColumnDireccion.setText("Dirección");
         tableColumnDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         tableColumnDireccion.setMinWidth(125);
         
-        tableColumnTelefono = new TableColumn<>();
-        tableColumnTelefono.setText("No. Teléfono");
-        tableColumnTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
-        tableColumnTelefono.setMinWidth(75);
-        
+        actualizarObservableList();
         tableViewProfesor = new TableView<>(observableList);
         tableViewProfesor.getColumns().addAll(tableColumnIdProfesor, tableColumnNombre,
-                tableColumnApellidos, tableColumnFechaNacimiento, tableColumnDpi,
-                tableColumnDireccion, tableColumnTelefono);
+                tableColumnApellidos, tableColumnFechaNacimiento, tableColumnDpi, 
+                tableColumnTelefono, tableColumnDireccion);
         
         gridPane.add(tableViewProfesor, 0, 3, 2, 1);
        
@@ -180,11 +200,254 @@ public class CRUDProfesor {
     
     public void actualizarTableViewItems() {
         actualizarObservableList();
-     //   tableView.setItems(observableList);
+        tableViewProfesor.setItems(observableList);
     }
        
     public void actualizarObservableList() {
-     //   observableList = FXCollections.observableList();
+        observableList = FXCollections.observableArrayList(ControladorProfesor.getInstance().getArrayList());
     }
     
+}
+
+class CrearProfesor {
+    private static CrearProfesor instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelApellido;
+    private TextField textFieldApellido;
+    private Label labelDpi;
+    private TextField textFieldDpi;
+    private Label labelTelefono;
+    private TextField textFieldTelefono;
+    private Label labelDireccion;
+    private TextField textFieldDireccion;
+    private Label labelFecha;
+     private DatePicker datePicker;
+    private Button buttonAgregar;
+    private Button buttonCerrar;
+    private Date date;
+    private int a = 0;
+    
+    private CrearProfesor() {
+    }
+    
+    public static CrearProfesor getInstance() {
+        if (instance == null) {
+            instance = new CrearProfesor();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane() {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Agregar Profesor");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombres :");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombres del Profesor");
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelApellido = new Label("Apellidos :");
+        gridPane.add(labelApellido, 0, 2);
+                
+        textFieldApellido = new TextField();
+        textFieldApellido.setPromptText("Apellidos del Profesor");
+        gridPane.add(textFieldApellido, 1, 2, 2, 1);
+        
+        labelFecha = new Label("Fecha de Nacimiento :");
+        gridPane.add(labelFecha, 0, 3);
+        
+        datePicker = new DatePicker();
+        datePicker.setPromptText("Fecha de Nacimiento");
+        gridPane.add(datePicker, 1, 3, 2, 1);
+        
+        labelDpi = new Label("DPI :");
+        gridPane.add(labelDpi, 0, 4);
+        
+        textFieldDpi = new TextField();
+        textFieldDpi.setPromptText("DPI del Profesor");
+        gridPane.add(textFieldDpi, 1, 4, 2, 1);
+        
+        labelTelefono = new Label("No. Teléfono :");
+        gridPane.add(labelTelefono, 0, 5);
+        
+        textFieldTelefono = new TextField();
+        textFieldTelefono.setPromptText("Teléfono del Profesor");
+        gridPane.add(textFieldTelefono, 1, 5, 2, 1);
+        
+        labelDireccion = new Label("Dirección :");
+        gridPane.add(labelDireccion, 0, 6);
+        
+        textFieldDireccion = new TextField();
+        textFieldDireccion.setPromptText("Dirección del Profesor");
+        gridPane.add(textFieldDireccion, 1, 6, 2, 1);
+        
+        buttonAgregar = new Button("Agregar");
+        buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorProfesor.getInstance().agregar(textFieldNombre.getText(),
+                            textFieldApellido.getText(),
+                            datePicker.getValue(),
+                            textFieldDpi.getText(),
+                            a = Integer.parseInt(textFieldTelefono.getText()),
+                            textFieldDireccion.getText());
+                CRUDProfesor.getInstance().reiniciarhBoxCRUD();
+                CRUDProfesor.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDProfesor.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonAgregar, 1, 7);
+        gridPane.add(buttonCerrar, 2, 7, 2, 1);
+        
+        return gridPane;
+    } 
+}
+
+class ModificarProfesor{
+    private static ModificarProfesor instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelApellido;
+    private TextField textFieldApellido;
+    private Label labelDpi;
+    private TextField textFieldDpi;
+    private Label labelTelefono;
+    private TextField textFieldTelefono;
+    private Label labelDireccion;
+    private TextField textFieldDireccion;
+    private Label labelFecha;
+     private DatePicker datePicker;
+    private Button buttonModificar;
+    private Button buttonCerrar;
+    private String stringTelefono;
+    private Date date;
+    private int a = 0;
+
+    public ModificarProfesor() {
+    }
+
+    public static ModificarProfesor getInstance() {
+        if (instance == null) {
+            instance = new ModificarProfesor();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Profesor profesor) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Modificar Profesor");
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombres :");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombres del Profesor");
+        textFieldNombre.setText(profesor.getNombres());
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelApellido = new Label("Apellidos :");
+        gridPane.add(labelApellido, 0, 2);
+                
+        textFieldApellido = new TextField();
+        textFieldApellido.setPromptText("Apellidos del Profesor");
+        textFieldApellido.setText(profesor.getApellidos());
+        gridPane.add(textFieldApellido, 1, 2, 2, 1);
+        
+        labelFecha = new Label("Fecha de Nacimiento :");
+        gridPane.add(labelFecha, 0, 3);
+        
+        datePicker = new DatePicker();
+        datePicker.setPromptText("Fecha de Nacimiento");
+        date = new Date(); 
+        date = profesor.getFechaNacimiento();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        LocalDate localDateNuevo = LocalDate.of(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH));
+        datePicker.setValue(localDateNuevo);
+        gridPane.add(datePicker, 1, 3, 2, 1);
+        
+        labelDpi = new Label("DPI :");
+        gridPane.add(labelDpi, 0, 4);
+        
+        textFieldDpi = new TextField();
+        textFieldDpi.setPromptText("DPI del Profesor");
+        textFieldDpi.setText(profesor.getDpi());
+        gridPane.add(textFieldDpi, 1, 4, 2, 1);
+        
+        labelTelefono = new Label("No. Teléfono :");
+        gridPane.add(labelTelefono, 0, 5);
+        
+        textFieldTelefono = new TextField();
+        textFieldTelefono.setPromptText("Teléfono del Profesor");
+        stringTelefono = String.valueOf(profesor.getTelefono());
+        textFieldTelefono.setText(stringTelefono);
+        gridPane.add(textFieldTelefono, 1, 5, 2, 1);
+        
+        labelDireccion = new Label("Dirección :");
+        gridPane.add(labelDireccion, 0, 6);
+        
+        textFieldDireccion = new TextField();
+        textFieldDireccion.setPromptText("Dirección del Profesor");
+        textFieldDireccion.setText(profesor.getDireccion());
+        gridPane.add(textFieldDireccion, 1, 6, 2, 1);
+        
+        buttonModificar = new Button("Modificar");
+        buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorProfesor.getInstance().modificarProfesor(textFieldNombre.getText(), 
+                        textFieldApellido.getText(), 
+                        datePicker.getValue(), 
+                        textFieldDpi.getText(), 
+                        a = Integer.parseInt(textFieldTelefono.getText()), 
+                        textFieldDireccion.getText(), 
+                        profesor.getIdProfesor());
+                CRUDProfesor.getInstance().reiniciarhBoxCRUD();
+                CRUDProfesor.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDProfesor.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonModificar, 1, 7);
+        gridPane.add(buttonCerrar, 2, 7, 2, 1);
+        
+        return gridPane;
+    }
+
 }

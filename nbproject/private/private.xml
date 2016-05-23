@@ -3,10 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/controlador/ControladorProfesor.java</file>
+            <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/gui/CRUDGrado.java</file>
             <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/gui/Login.java</file>
             <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/database/SQLDatabaseConnection.java</file>
             <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/gui/VentanaWindows.java</file>
-            <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/gui/CRUDUsuario.java</file>
+            <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/conexion.properties</file>
+            <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/beans/Profesor.java</file>
+            <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/beans/Grado.java</file>
+            <file>file:/C:/Users/josem/Documents/NetBeansProjects/FXColegio/src/org/josemorente/controlador/ControladorUsuario.java</file>
         </group>
     </open-files>
 </project-private>
