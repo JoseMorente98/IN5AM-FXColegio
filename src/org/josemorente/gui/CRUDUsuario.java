@@ -43,6 +43,7 @@ public class CRUDUsuario {
     private Button buttonModificar;
     private Button buttonEliminar;
     private Button buttonActualizar;
+    private Button buttonVer;
     private TableView<Usuario> tableView;
     private TableColumn<Usuario, Integer> tableColumnIdUsuario;
     private TableColumn<Usuario, Boolean> tableColumnActivo;
@@ -84,7 +85,7 @@ public class CRUDUsuario {
         textFieldBuscar.setPromptText("Buscar Usuario");
         
         buttonBuscar = new Button("Buscar");
-        buttonBuscar.setStyle("-fx-base: rgb(17,71,138);");
+        buttonBuscar.setId("buttonBuscar");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -98,7 +99,7 @@ public class CRUDUsuario {
         hBoxButtons = new HBox(10);
         
         buttonNuevo = new Button("Nuevo");
-        buttonNuevo.setStyle("-fx-base: rgb(0,120,0);");
+        buttonNuevo.setId("buttonNuevo");
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -108,7 +109,7 @@ public class CRUDUsuario {
         });
         
         buttonModificar = new Button("Modificar");
-        buttonModificar.setStyle("-fx-base : rgb(85,210,10);");// Verde Limon
+        buttonModificar.setId("buttonModificar");
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -122,7 +123,7 @@ public class CRUDUsuario {
         });
         
         buttonEliminar = new Button("Eliminar");
-        buttonEliminar.setStyle("-fx-base : rgb(200,0,0);");//Rojo Oscuro
+        buttonEliminar.setId("buttonEliminar");
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -134,7 +135,7 @@ public class CRUDUsuario {
         });
         
         buttonActualizar = new Button("Actualizar");
-        buttonActualizar.setStyle("-fx-base : rgb(0,128,192);"); //Azul Marino
+        buttonActualizar.setId("buttonActualizar");
         buttonActualizar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -142,7 +143,11 @@ public class CRUDUsuario {
             }
         });
         
-        hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar);
+        buttonVer = new Button("Ver");
+        buttonVer.setId("buttonVer");
+        
+        hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
+                buttonVer);
         gridPane.add(hBoxButtons, 0, 2);
         
         tableColumnIdUsuario = new TableColumn<>();
@@ -219,17 +224,19 @@ class CrearUsuario {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Agregar Usuario");
+        textTitulo.setId("titulo");
         textTitulo.setFill(Color.WHITESMOKE);
-        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 15));
         gridPane.add(textTitulo, 0, 0);
         
         labelActivo = new Label("Activo");
+        labelActivo.setId("labels");
         gridPane.add(labelActivo, 0, 1);
         
         checkBoxActivo = new CheckBox();
         gridPane.add(checkBoxActivo, 1, 1, 2, 1);
         
         labelNombre = new Label("Usuario :");
+        labelNombre.setId("labels");
         gridPane.add(labelNombre, 0, 2);
         
         textFieldNombre = new TextField();
@@ -237,6 +244,7 @@ class CrearUsuario {
         gridPane.add(textFieldNombre , 1, 2, 2, 1);
         
         labelPassword = new Label("Contraseña :");
+        labelPassword.setId("labels");
         gridPane.add(labelPassword, 0, 3);
         
         passwordFieldClave = new PasswordField();
@@ -244,6 +252,7 @@ class CrearUsuario {
         gridPane.add(passwordFieldClave, 1, 3, 2, 1);
         
         buttonAgregar = new Button("Agregar");
+        buttonAgregar.setId("buttonAgregar");
         buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -256,6 +265,7 @@ class CrearUsuario {
         });
         
         buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
         buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -301,11 +311,12 @@ class ModificarUsuario{
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Modificar Usuario");
+        textTitulo.setId("titulo");
         textTitulo.setFill(Color.WHITESMOKE);
-        textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 15));
         gridPane.add(textTitulo, 0, 0);
         
         labelActivo = new Label("Activo");
+        labelActivo.setId("labels");
         gridPane.add(labelActivo, 0, 1);
         
         checkBoxActivo = new CheckBox();
@@ -313,6 +324,7 @@ class ModificarUsuario{
         gridPane.add(checkBoxActivo, 1, 1, 2, 1);
         
         labelNombre = new Label("Usuario :");
+        labelNombre.setId("labels");
         gridPane.add(labelNombre, 0, 2);
         
         textFieldNombre = new TextField();
@@ -321,6 +333,7 @@ class ModificarUsuario{
         gridPane.add(textFieldNombre , 1, 2, 2, 1);
         
         labelPassword = new Label("Contraseña :");
+        labelPassword.setId("labels");
         gridPane.add(labelPassword, 0, 3);
         
         passwordFieldClave = new PasswordField();
@@ -329,6 +342,7 @@ class ModificarUsuario{
         gridPane.add(passwordFieldClave, 1, 3, 2, 1);
         
         buttonModificar = new Button("Modificar");
+        buttonModificar.setId("buttonModificar");
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -342,6 +356,7 @@ class ModificarUsuario{
         });
         
         buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
         buttonCerrar.setOnAction(new  EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

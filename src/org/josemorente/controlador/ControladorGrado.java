@@ -67,4 +67,14 @@ public class ControladorGrado {
         String query = "DELETE Grado WHERE idGrado = " + idGrado + ";";
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
+    
+    //Buscar Grado
+    public Grado buscar(int idGrado) {
+        for (Grado grado: arrayListGrado) {
+            if (grado.getIdGrado() == idGrado) {
+                return grado;
+            }
+        }
+        return null;
+    }
 }

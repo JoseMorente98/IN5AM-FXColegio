@@ -41,5 +41,8 @@ public class Grado {
         this.descripcion = descripcion;
     }
 
-    
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
 }

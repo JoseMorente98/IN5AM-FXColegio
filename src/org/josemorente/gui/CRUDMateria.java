@@ -41,6 +41,7 @@ public class CRUDMateria {
     private Button buttonModificar;
     private Button buttonEliminar;
     private Button buttonActualizar;
+    private Button buttonVer;
     private TableView<Materia> tableViewMateria;
     private TableColumn<Materia, Integer> tableColumnIdMateria;
     private TableColumn<Materia, String> tableColumnNombre;
@@ -81,7 +82,7 @@ public class CRUDMateria {
         textFieldBuscar.setPromptText("Buscar Materia");
         
         buttonBuscar = new Button("Buscar");
-        buttonBuscar.setStyle("-fx-base: rgb(17,71,138);");
+        buttonBuscar.setId("buttonBuscar");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -95,7 +96,7 @@ public class CRUDMateria {
         hBoxButtons = new HBox(10);
         
         buttonNuevo = new Button("Nuevo");
-        buttonNuevo.setStyle("-fx-base: rgb(0,120,0);");
+        buttonNuevo.setId("buttonNuevo");
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -105,7 +106,7 @@ public class CRUDMateria {
         });
         
         buttonModificar = new Button("Modificar");
-        buttonModificar.setStyle("-fx-base : rgb(85,210,10);");// Verde Limon
+        buttonModificar.setId("buttonModificar");
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -119,7 +120,7 @@ public class CRUDMateria {
         });
         
         buttonEliminar = new Button("Eliminar");
-        buttonEliminar.setStyle("-fx-base : rgb(200,0,0);");//Rojo Oscuro
+        buttonEliminar.setId("buttonEliminar");
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -131,7 +132,7 @@ public class CRUDMateria {
         });
         
         buttonActualizar = new Button("Actualizar");
-        buttonActualizar.setStyle("-fx-base : rgb(0,128,192);"); //Azul Marino
+        buttonActualizar.setId("buttonActualizar");
         buttonActualizar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -139,7 +140,11 @@ public class CRUDMateria {
             }
         });
         
-        hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar);
+        buttonVer = new Button("Ver");
+        buttonVer.setId("buttonVer");
+        
+        hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
+                buttonVer);
         gridPane.add(hBoxButtons, 0, 2);
         
         tableColumnIdMateria = new TableColumn<>();
@@ -208,9 +213,12 @@ class AgregarMateria {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Agregar Materia");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
         gridPane.add(textTitulo, 0, 0);
         
         labelNombre = new Label("Nombre :");
+        labelNombre.setId("labels");
         gridPane.add(labelNombre, 0, 1);
         
         textFieldNombre = new TextField();
@@ -218,6 +226,7 @@ class AgregarMateria {
         gridPane.add(textFieldNombre, 1, 1, 2, 1);
         
         labelDescripcion = new Label("Descripción :");
+        labelDescripcion.setId("labels");
         gridPane.add(labelDescripcion, 0, 2);
                 
         textFieldDescripcion = new TextField();
@@ -225,6 +234,7 @@ class AgregarMateria {
         gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
         
         buttonAgregar = new Button("Agregar");
+        buttonAgregar.setId("buttonAgregar");
         buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -235,6 +245,7 @@ class AgregarMateria {
             }
         });
         buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
         buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -278,17 +289,21 @@ class ModificarMateria {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Modificar Materia");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
         gridPane.add(textTitulo, 0, 0);
         
         labelNombre = new Label("Nombre :");
-        gridPane.add(labelNombre, 0, 1);
-        
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 1);        
+
         textFieldNombre = new TextField();
         textFieldNombre.setPromptText("Nombre de Materia");
         textFieldNombre.setText(materia.getNombre());
         gridPane.add(textFieldNombre, 1, 1, 2, 1);
         
         labelDescripcion = new Label("Descripción :");
+        labelDescripcion.setId("labels");
         gridPane.add(labelDescripcion, 0, 2);
                 
         textFieldDescripcion = new TextField();
@@ -297,6 +312,7 @@ class ModificarMateria {
         gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
         
         buttonModificar = new Button("Modificar");
+        buttonModificar.setId("buttonModificar");
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -309,6 +325,7 @@ class ModificarMateria {
         });
         
         buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
         buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

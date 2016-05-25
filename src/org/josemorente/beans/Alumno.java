@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  *
- * @author José Morentes
+ * @author José Morente
  */
 public class Alumno {
     private int idAlumno;
@@ -22,7 +22,7 @@ public class Alumno {
     private int telefono;
     private String direccion;
     
-    private Alumno() {  
+    public Alumno() {  
     }
 
     public int getIdAlumno() {

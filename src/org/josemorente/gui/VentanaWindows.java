@@ -15,6 +15,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -63,11 +64,12 @@ public class VentanaWindows extends Application {
         vBoxPrincipal.getChildren().addAll(getMenuBar(), stackPane);
         
         Scene scene;
-        scene = new Scene(vBoxPrincipal, 1100, 600);
+        scene = new Scene(vBoxPrincipal, 1250, 620);
         scene.getStylesheets().add("/org/josemorente/recursos/aplicacion.css");
         
+        stage.getIcons().add(new Image("/org/josemorente/recursos/Colegio.ico"));
         stage.setResizable(true);
-        stage.setTitle("FXColegio v. 1.0.0.0 ");
+        stage.setTitle("FXColegio v. 1.0 ");
         stage.setScene(scene);
         stage.show();
     }
@@ -116,26 +118,34 @@ public class VentanaWindows extends Application {
     
     public TabPane getTabPane() {
         tabPane = new TabPane();
+        tabPane.setId("tabPa");
         
         tabUsuario = new Tab("Usuarios");
+        tabUsuario.setId("tabPane");
         tabUsuario.setContent(CRUDUsuario.getInstance().gethBoxCRUD());
         
         tabProfesor = new Tab("Profesores");
+        tabProfesor.setId("tabPane");
         tabProfesor.setContent(CRUDProfesor.getInstance().gethBoxCRUD());
         
         tabMateria = new Tab("Materias");
+        tabMateria.setId("tabPane");
         tabMateria.setContent(CRUDMateria.getInstance().gethBoxCRUD());
         
         tabCarrera = new Tab("Carreras");
+        tabCarrera.setId("tabPane");
         tabCarrera.setContent(CRUDCarrera.getInstance().gethBoxCRUD());
         
         tabGrado = new Tab("Grados");
+        tabGrado.setId("tabPane");
         tabGrado.setContent(CRUDGrado.getInstance().gethBoxCRUD());
         
         tabSeccionTecnica = new Tab("Secciones Técnicas");
+        tabSeccionTecnica.setId("tabPane");
         tabSeccionTecnica.setContent(CRUDSeccionTecnica.getInstance().gethBoxCRUD());
         
         tabAlumno = new Tab("Alumnos");
+        tabAlumno.setId("tabPane");
         tabAlumno.setContent(CRUDAlumno.getInstance().gethBoxCRUD());
         
         tabPane.getTabs().addAll(tabUsuario, tabProfesor, tabMateria, tabCarrera, tabGrado, tabSeccionTecnica,

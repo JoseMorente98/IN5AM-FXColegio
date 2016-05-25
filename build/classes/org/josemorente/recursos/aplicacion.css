@@ -9,10 +9,102 @@ and open the template in the editor.
 */
 
 #stackPane-aplicacion {
-    -fx-background-image: url("../recursos/c.png");
+    -fx-background-image: url("../recursos/Appl.png");
     -fx-background-size: cover;
 }
 
 .button {
-    -fx-border-color: #e2e2e2;
+    -fx-border-color: #ffffff;
+    -fx-font-size: 10pt;
+    -fx-text-fill: #ffffff;
+}
+
+.text-field {
+    -fx-background-radius: 0;
+}
+
+#buttonBuscar {
+    -fx-base: rgb(0,64,128);
+}
+
+#buttonNuevo {
+    -fx-base: rgb(0,70,0);
+}
+
+#buttonModificar {
+    -fx-base: rgb(0,130,0);
+}
+
+#buttonEliminar {
+    -fx-base : rgb(190,0,0);
+}
+
+#buttonActualizar {
+    -fx-base : rgb(0,107,159);
+}
+
+#buttonAgregar {
+    -fx-base: rgb(0,70,0);
+}
+
+#buttonCerrar {
+    -fx-base: BLACK;
+}
+
+#buttonVer {
+    -fx-base: rgb(128,0,64);
+}
+
+#titulo {
+    -fx-font-size: 15pt;
+}
+
+.tab {
+    -fx-background-radius: 0;
+}
+
+#tabPane {
+    -fx-base: #003366;
+    -fx-border-color: #ffffff;
+}
+
+#labels {
+    -fx-font-size: 10pt;
+    -fx-text-fill: #ffffff;
+}
+
+.combo-box {
+    -fx-background-radius: 0;
+    -fx-background-color: #003366;
+    -fx-border-color: #ffffff;
+    -fx-base: BLACK;
+}
+
+.choice-box {
+    -fx-background-radius: 0;
+    -fx-background-color: #003366;
+    -fx-border-color: #ffffff;
+    -fx-base: BLACK;
+}
+
+.date-picker {
+    -fx-background-radius: 0;
+}
+
+.check-box {
+    -fx-text-fill: white;
+}
+ 
+.check-box .box {
+    -fx-background-color: #ffffff;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+    -fx-borders-style: solid;
+    -fx-padding: 1;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #000066;
 }

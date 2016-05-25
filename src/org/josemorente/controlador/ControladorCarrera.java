@@ -68,4 +68,14 @@ public class ControladorCarrera {
         String query = "DELETE Carrera WHERE idCarrera = " + idCarrera + ";";
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
+    
+    //Buscar Carrera
+    public Carrera buscar(int idCarrera) {
+        for(Carrera carrera: arrayListCarrera) {
+            if (carrera.getIdCarrera() == idCarrera) {
+                return carrera;
+            }
+        }
+        return null;
+    }
 }

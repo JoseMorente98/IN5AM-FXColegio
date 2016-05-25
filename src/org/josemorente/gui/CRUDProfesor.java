@@ -45,6 +45,7 @@ public class CRUDProfesor {
     private Button buttonModificar;
     private Button buttonEliminar;
     private Button buttonActualizar;
+    private Button buttonVer;
     private TableView<Profesor> tableViewProfesor;
     private TableColumn<Profesor, Integer> tableColumnIdProfesor;
     private TableColumn<Profesor, String> tableColumnNombre;
@@ -89,7 +90,7 @@ public class CRUDProfesor {
         textFieldBuscar.setPromptText("Buscar Profesor");
         
         buttonBuscar = new Button("Buscar");
-        buttonBuscar.setStyle("-fx-base: rgb(17,71,138);");
+        buttonBuscar.setId("buttonBuscar");
         buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -103,7 +104,7 @@ public class CRUDProfesor {
         hBoxButtons = new HBox(10);
         
         buttonNuevo = new Button("Nuevo");
-        buttonNuevo.setStyle("-fx-base: rgb(0,120,0);");
+        buttonNuevo.setId("buttonNuevo");
         buttonNuevo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -113,7 +114,7 @@ public class CRUDProfesor {
         });
         
         buttonModificar = new Button("Modificar");
-        buttonModificar.setStyle("-fx-base : rgb(85,210,10);");// Verde Limon
+        buttonModificar.setId("buttonModificar");
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -127,7 +128,7 @@ public class CRUDProfesor {
         });
         
         buttonEliminar = new Button("Eliminar");
-        buttonEliminar.setStyle("-fx-base : rgb(200,0,0);");//Rojo Oscuro
+        buttonEliminar.setId("buttonEliminar");
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -139,7 +140,7 @@ public class CRUDProfesor {
         });
         
         buttonActualizar = new Button("Actualizar");
-        buttonActualizar.setStyle("-fx-base : rgb(0,128,192);"); //Azul Marino
+        buttonActualizar.setId("buttonActualizar");
         buttonActualizar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -147,7 +148,11 @@ public class CRUDProfesor {
             }
         });
         
-        hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar);
+        buttonVer = new Button("Ver");
+        buttonVer.setId("buttonVer");
+        
+        hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
+                buttonVer);
         gridPane.add(hBoxButtons, 0, 2);
 
         tableColumnIdProfesor = new TableColumn<>();
@@ -248,9 +253,12 @@ class CrearProfesor {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Agregar Profesor");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
         gridPane.add(textTitulo, 0, 0);
         
         labelNombre = new Label("Nombres :");
+        labelNombre.setId("labels");
         gridPane.add(labelNombre, 0, 1);
         
         textFieldNombre = new TextField();
@@ -258,6 +266,7 @@ class CrearProfesor {
         gridPane.add(textFieldNombre, 1, 1, 2, 1);
         
         labelApellido = new Label("Apellidos :");
+        labelApellido.setId("labels");
         gridPane.add(labelApellido, 0, 2);
                 
         textFieldApellido = new TextField();
@@ -265,6 +274,7 @@ class CrearProfesor {
         gridPane.add(textFieldApellido, 1, 2, 2, 1);
         
         labelFecha = new Label("Fecha de Nacimiento :");
+        labelFecha.setId("labels");
         gridPane.add(labelFecha, 0, 3);
         
         datePicker = new DatePicker();
@@ -272,6 +282,7 @@ class CrearProfesor {
         gridPane.add(datePicker, 1, 3, 2, 1);
         
         labelDpi = new Label("DPI :");
+        labelDpi.setId("labels");
         gridPane.add(labelDpi, 0, 4);
         
         textFieldDpi = new TextField();
@@ -279,6 +290,7 @@ class CrearProfesor {
         gridPane.add(textFieldDpi, 1, 4, 2, 1);
         
         labelTelefono = new Label("No. Teléfono :");
+        labelTelefono.setId("labels");
         gridPane.add(labelTelefono, 0, 5);
         
         textFieldTelefono = new TextField();
@@ -286,6 +298,7 @@ class CrearProfesor {
         gridPane.add(textFieldTelefono, 1, 5, 2, 1);
         
         labelDireccion = new Label("Dirección :");
+        labelDireccion.setId("labels");
         gridPane.add(labelDireccion, 0, 6);
         
         textFieldDireccion = new TextField();
@@ -293,6 +306,7 @@ class CrearProfesor {
         gridPane.add(textFieldDireccion, 1, 6, 2, 1);
         
         buttonAgregar = new Button("Agregar");
+        buttonAgregar.setId("buttonAgregar");
         buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -308,6 +322,7 @@ class CrearProfesor {
         });
         
         buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
         buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -362,9 +377,12 @@ class ModificarProfesor{
         gridPane.setPadding(new Insets(25, 25, 25, 25));
         
         textTitulo = new Text("Modificar Profesor");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
         gridPane.add(textTitulo, 0, 0);
         
         labelNombre = new Label("Nombres :");
+        labelNombre.setId("labels");
         gridPane.add(labelNombre, 0, 1);
         
         textFieldNombre = new TextField();
@@ -373,6 +391,7 @@ class ModificarProfesor{
         gridPane.add(textFieldNombre, 1, 1, 2, 1);
         
         labelApellido = new Label("Apellidos :");
+        labelApellido.setId("labels");
         gridPane.add(labelApellido, 0, 2);
                 
         textFieldApellido = new TextField();
@@ -381,6 +400,7 @@ class ModificarProfesor{
         gridPane.add(textFieldApellido, 1, 2, 2, 1);
         
         labelFecha = new Label("Fecha de Nacimiento :");
+        labelFecha.setId("labels");
         gridPane.add(labelFecha, 0, 3);
         
         datePicker = new DatePicker();
@@ -396,6 +416,7 @@ class ModificarProfesor{
         gridPane.add(datePicker, 1, 3, 2, 1);
         
         labelDpi = new Label("DPI :");
+        labelDpi.setId("labels");
         gridPane.add(labelDpi, 0, 4);
         
         textFieldDpi = new TextField();
@@ -404,6 +425,7 @@ class ModificarProfesor{
         gridPane.add(textFieldDpi, 1, 4, 2, 1);
         
         labelTelefono = new Label("No. Teléfono :");
+        labelTelefono.setId("labels");
         gridPane.add(labelTelefono, 0, 5);
         
         textFieldTelefono = new TextField();
@@ -413,6 +435,7 @@ class ModificarProfesor{
         gridPane.add(textFieldTelefono, 1, 5, 2, 1);
         
         labelDireccion = new Label("Dirección :");
+        labelDireccion.setId("labels");
         gridPane.add(labelDireccion, 0, 6);
         
         textFieldDireccion = new TextField();
@@ -421,6 +444,7 @@ class ModificarProfesor{
         gridPane.add(textFieldDireccion, 1, 6, 2, 1);
         
         buttonModificar = new Button("Modificar");
+        buttonModificar.setId("buttonModificar");
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -437,6 +461,7 @@ class ModificarProfesor{
         });
         
         buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
         buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -62,6 +63,7 @@ public class Login extends Stage {
         
         textTituloA = new Text("Nombre de Usuario:");
         textTituloA.setFill(Color.WHITESMOKE);
+        textTituloA.setFont(Font.font(Font.getDefault().getFamily(), 14));
         textFieldUsuario = new TextField();
         textFieldUsuario.setPromptText("Usuario ");
         gridPane.add(textTituloA ,  0, 1, 1, 1);
@@ -69,6 +71,7 @@ public class Login extends Stage {
         
         textTituloB = new Text("Contraseña de Usuario:");
         textTituloB.setFill(Color.WHITESMOKE);
+        textTituloB.setFont(Font.font(Font.getDefault().getFamily(), 14));
         passwordFieldPassword = new PasswordField();
         passwordFieldPassword.setPromptText("Contraseña");
         gridPane.add(textTituloB, 0, 3, 1, 1);
@@ -101,6 +104,7 @@ public class Login extends Stage {
         
         this.setResizable(false);
         this.setScene(scene);
+        this.getIcons().add(new Image("/org/josemorente/recursos/Colegio.ico"));
         this.setTitle("Login FXColegio");
         this.show();
     }
