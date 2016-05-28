@@ -127,7 +127,7 @@ public class CRUDUsuario {
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (tableView.getSelectionModel().getSelectedItems() != null) {
+                if (tableView.getSelectionModel().getSelectedItem() != null) {
                     ControladorUsuario.getInstance().eliminarUsuario(tableView.getSelectionModel().getSelectedItem().getIdUsuario());
                     actualizarTableViewItems();
                 }
@@ -145,6 +145,17 @@ public class CRUDUsuario {
         
         buttonVer = new Button("Ver");
         buttonVer.setId("buttonVer");
+        buttonVer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                if (tableView.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, VerUsuario.getInstance().getGridPane((Usuario) tableView.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
+            }
+        });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
                 buttonVer);
@@ -368,4 +379,81 @@ class ModificarUsuario{
         gridPane.add(buttonCerrar, 2, 4, 2, 1);
         return gridPane;
     }
+}
+
+class VerUsuario {
+    private static VerUsuario instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelActivo;
+    private CheckBox checkBoxActivo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelPassword;
+    private PasswordField passwordFieldClave;
+    private Button buttonCerrar;
+
+    public VerUsuario() {
+    }
+
+    public static VerUsuario getInstance() {
+        if (instance == null) {
+            instance = new VerUsuario();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Usuario usuario) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Vista del Usuario");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelActivo = new Label("Activo");
+        labelActivo.setId("labels");
+        gridPane.add(labelActivo, 0, 1);
+        
+        checkBoxActivo = new CheckBox();
+        checkBoxActivo.selectedProperty().set(usuario.isActivo());
+        gridPane.add(checkBoxActivo, 1, 1, 2, 1);
+        
+        labelNombre = new Label("Usuario :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 2);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombre de usuario");
+        textFieldNombre.setText(usuario.getUsuario());
+        textFieldNombre.setEditable(false);
+        gridPane.add(textFieldNombre , 1, 2, 2, 1);
+        
+        labelPassword = new Label("Contraseña :");
+        labelPassword.setId("labels");
+        gridPane.add(labelPassword, 0, 3);
+        
+        passwordFieldClave = new PasswordField();
+        passwordFieldClave.setPromptText("Contraseña de usuario");
+        passwordFieldClave.setText(usuario.getPassword());
+        passwordFieldClave.setEditable(false);
+        gridPane.add(passwordFieldClave, 1, 3, 2, 1);
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new  EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDUsuario.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonCerrar, 1, 4);
+        return gridPane;
+    }
+    
 }

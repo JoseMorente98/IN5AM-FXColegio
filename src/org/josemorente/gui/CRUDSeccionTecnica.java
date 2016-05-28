@@ -143,6 +143,17 @@ public class CRUDSeccionTecnica {
         
         buttonVer = new Button("Ver");
         buttonVer.setId("buttonVer");
+        buttonVer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                if (tableViewSeccionTecnica.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, VerSeccionTecnica.getInstance().getGridPane((SeccionTecnica) tableViewSeccionTecnica.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
+            }
+        });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
                 buttonVer);
@@ -215,7 +226,7 @@ class AgregarSeccionTecnica {
         textTitulo = new Text("Agregar Sección Técnica");
         textTitulo.setId("titulo");
         textTitulo.setFill(Color.WHITESMOKE);
-        gridPane.add(textTitulo, 0, 0);
+        gridPane.add(textTitulo, 0, 0, 2, 1);
         
         labelNombre = new Label("Nombre :");
         labelNombre.setId("labels");
@@ -257,9 +268,7 @@ class AgregarSeccionTecnica {
         gridPane.add(buttonAgregar, 1, 3);
         gridPane.add(buttonCerrar, 2, 3 , 2, 1);
         return gridPane;
-    }
-    
-    
+    }  
 }
 
 class ModificarSeccionTecnica {
@@ -339,5 +348,68 @@ class ModificarSeccionTecnica {
         gridPane.add(buttonCerrar, 2, 3 , 2, 1);
         return gridPane;
     }
+}
+
+class VerSeccionTecnica {
+    private static VerSeccionTecnica instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelDescripcion;
+    private TextField textFieldDescripcion;
+    private Button buttonCerrar;
+
+    private VerSeccionTecnica() {
+    }
+
+    public static VerSeccionTecnica getInstance() {
+        if (instance == null) {
+            instance = new VerSeccionTecnica();
+        }
+        return instance;
+    }
     
+    public GridPane getGridPane(SeccionTecnica seccionTecnica) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Vista de Sección Técnica");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0, 2, 1);
+        
+        labelNombre = new Label("Nombre :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setEditable(false);
+        textFieldNombre.setText(seccionTecnica.getNombre());
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelDescripcion = new Label("Descripción :");
+        labelDescripcion.setId("labels");
+        gridPane.add(labelDescripcion, 0, 2);
+                
+        textFieldDescripcion = new TextField();
+        textFieldDescripcion.setEditable(false);
+        textFieldDescripcion.setText(seccionTecnica.getDescripcion());
+        gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDSeccionTecnica.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonCerrar, 1, 3);
+        return gridPane;
+    }
 }

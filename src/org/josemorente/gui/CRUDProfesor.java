@@ -132,7 +132,7 @@ public class CRUDProfesor {
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (tableViewProfesor.getSelectionModel().getSelectedItems() != null) {
+                if (tableViewProfesor.getSelectionModel().getSelectedItem() != null) {
                     ControladorProfesor.getInstance().eliminar(tableViewProfesor.getSelectionModel().getSelectedItem().getIdProfesor());
                     actualizarTableViewItems();
                 }
@@ -150,6 +150,17 @@ public class CRUDProfesor {
         
         buttonVer = new Button("Ver");
         buttonVer.setId("buttonVer");
+        buttonVer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                if (tableViewProfesor.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, VerProfesor.getInstance().getGridPane((Profesor) tableViewProfesor.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
+            }
+        });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
                 buttonVer);
@@ -475,4 +486,128 @@ class ModificarProfesor{
         return gridPane;
     }
 
+}
+
+class VerProfesor {
+    private static VerProfesor instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelApellido;
+    private TextField textFieldApellido;
+    private Label labelDpi;
+    private TextField textFieldDpi;
+    private Label labelTelefono;
+    private TextField textFieldTelefono;
+    private Label labelDireccion;
+    private TextField textFieldDireccion;
+    private Label labelFecha;
+     private DatePicker datePicker;
+    private Button buttonCerrar;
+    private String stringTelefono;
+    private Date date;
+    private int a = 0;
+
+    private VerProfesor() {
+    }
+
+    public static VerProfesor getInstance() {
+        if (instance == null) {
+            instance = new VerProfesor();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Profesor profesor) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Vista del Profesor");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombres :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setPromptText("Nombres del Profesor");
+        textFieldNombre.setText(profesor.getNombres());
+        textFieldNombre.setEditable(false);
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelApellido = new Label("Apellidos :");
+        labelApellido.setId("labels");
+        gridPane.add(labelApellido, 0, 2);
+                
+        textFieldApellido = new TextField();
+        textFieldApellido.setPromptText("Apellidos del Profesor");
+        textFieldApellido.setText(profesor.getApellidos());
+        textFieldApellido.setEditable(false);
+        gridPane.add(textFieldApellido, 1, 2, 2, 1);
+        
+        labelFecha = new Label("Fecha de Nacimiento :");
+        labelFecha.setId("labels");
+        gridPane.add(labelFecha, 0, 3);
+        
+        datePicker = new DatePicker();
+        datePicker.setPromptText("Fecha de Nacimiento");
+        date = new Date(); 
+        date = profesor.getFechaNacimiento();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        LocalDate localDateNuevo = LocalDate.of(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH));
+        datePicker.setValue(localDateNuevo);
+        datePicker.setEditable(false);
+        gridPane.add(datePicker, 1, 3, 2, 1);
+        
+        labelDpi = new Label("DPI :");
+        labelDpi.setId("labels");
+        gridPane.add(labelDpi, 0, 4);
+        
+        textFieldDpi = new TextField();
+        textFieldDpi.setPromptText("DPI del Profesor");
+        textFieldDpi.setText(profesor.getDpi());
+        textFieldDpi.setEditable(false);
+        gridPane.add(textFieldDpi, 1, 4, 2, 1);
+        
+        labelTelefono = new Label("No. Teléfono :");
+        labelTelefono.setId("labels");
+        gridPane.add(labelTelefono, 0, 5);
+        
+        textFieldTelefono = new TextField();
+        textFieldTelefono.setPromptText("Teléfono del Profesor");
+        stringTelefono = String.valueOf(profesor.getTelefono());
+        textFieldTelefono.setText(stringTelefono);
+        textFieldTelefono.setEditable(false);
+        gridPane.add(textFieldTelefono, 1, 5, 2, 1);
+        
+        labelDireccion = new Label("Dirección :");
+        labelDireccion.setId("labels");
+        gridPane.add(labelDireccion, 0, 6);
+        
+        textFieldDireccion = new TextField();
+        textFieldDireccion.setPromptText("Dirección del Profesor");
+        textFieldDireccion.setText(profesor.getDireccion());
+        textFieldDireccion.setEditable(false);
+        gridPane.add(textFieldDireccion, 1, 6, 2, 1);
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDProfesor.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        gridPane.add(buttonCerrar, 1, 7);
+        return gridPane;
+    }
 }

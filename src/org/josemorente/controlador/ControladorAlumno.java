@@ -65,5 +65,11 @@ public class ControladorAlumno {
         return arrayListAlumno;
     }
     
-    
+    //Modificar Alumno
+    public void modificarAlumno(String nombres, String apellidos, LocalDate fechaNacimiento, int idGrado, int idCarrera, 
+            String jornada, int telefono, String direccion, int idAlumno) {
+        String query =  "UPDATE Alumno SET nombres = '" + nombres + "', apellidos = '" + apellidos + "', fechaNacimiento = '" + fechaNacimiento + "', idGrado = " + idGrado + ", "
+                + "idCarrera = " + idCarrera + ", jornada = '" + jornada + "', telefono = " + telefono + ", direccion = '" + direccion + "' WHERE idAlumno = " + idAlumno+ ";";
+        SQLDatabaseConnection.getInstance().executeQuery(query);
+    }
 }

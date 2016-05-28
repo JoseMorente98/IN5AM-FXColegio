@@ -6,6 +6,7 @@
 package org.josemorente.gui;
 
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Observable;
 import javafx.collections.FXCollections;
@@ -127,7 +128,12 @@ public class CRUDAlumno {
         buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                hBoxCRUD.getChildren().clear();
+                if (tableViewAlumno.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, ModificarAlumno.getInstance().getGridPane((Alumno) tableViewAlumno.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
             }
         });
         
@@ -151,6 +157,17 @@ public class CRUDAlumno {
         
         buttonVer = new Button("Ver");
         buttonVer.setId("buttonVer");
+        buttonVer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                if (tableViewAlumno.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, VerAlumno.getInstance().getGridPane((Alumno) tableViewAlumno.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
+            }
+        });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
                 buttonVer);
@@ -396,5 +413,332 @@ class AgregarAlumno {
     public void actualizarComboBoxCarrera() {
         actualizarObservableListCarrera();
         comboBoxCarrera.setItems(observableListCarrera);
+    }
+}
+
+class ModificarAlumno {
+    public static ModificarAlumno instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelApellido;
+    private TextField textFieldApellido;
+    private Label labelFecha;
+    private DatePicker datePicker;
+    private Label labelGrado;
+    private ComboBox<Grado> comboBoxGrado;
+    private Label labelCarrera;
+    private ComboBox<Carrera> comboBoxCarrera;
+    private Label labelJornada;
+    private ChoiceBox choiceBoxJornada;
+    private Label labelTelefono;
+    private TextField textFieldTelefono;
+    private Label labelDireccion;
+    private TextField textFieldDireccion;
+    private Button buttonModificar;
+    private Button buttonCerrar;
+    private String stringTelefono;
+    private Date date;
+    private int a = 0;
+    
+    private ObservableList<Grado> observableListGrado;
+    private ObservableList<Carrera> observableListCarrera;
+
+    private ModificarAlumno() {
+        actualizarObservableListCarrera();
+        actualizarObservableListGrado();
+    }
+
+    public static ModificarAlumno getInstance() {
+        if (instance == null) {
+            instance = new ModificarAlumno();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Alumno alumno) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Modificar Alumno");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombres :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setText(alumno.getNombres());
+        textFieldNombre.setPromptText("Nombres del Alumno");
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelApellido = new Label("Apellidos :");
+        labelApellido.setId("labels");
+        gridPane.add(labelApellido, 0, 2);
+                
+        textFieldApellido = new TextField();
+        textFieldApellido.setText(alumno.getApellidos());
+        textFieldApellido.setPromptText("Apellidos del Alumno");
+        gridPane.add(textFieldApellido, 1, 2, 2, 1);
+        
+        labelFecha = new Label("Fecha de Nacimiento :");
+        labelFecha.setId("labels");
+        gridPane.add(labelFecha, 0, 3);
+        
+        datePicker = new DatePicker();
+        datePicker.setPromptText("Fecha de Nacimiento");
+        date = new Date(); 
+        date = alumno.getFechaNacimiento();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        LocalDate localDateNuevo = LocalDate.of(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH));
+        datePicker.setValue(localDateNuevo);
+        gridPane.add(datePicker, 1, 3, 2, 1);
+        
+        labelGrado = new Label("Grado :");
+        labelGrado.setId("labels");
+        gridPane.add(labelGrado, 0, 4);
+        
+        comboBoxGrado = new ComboBox<>(observableListGrado);
+        comboBoxGrado.setValue(alumno.getGrado());
+        gridPane.add(comboBoxGrado, 1, 4, 2, 1);
+        
+        labelCarrera = new Label("Carrera :");
+        labelCarrera.setId("labels");
+        gridPane.add(labelCarrera, 0, 5);
+        
+        comboBoxCarrera = new ComboBox<>(observableListCarrera);
+        comboBoxCarrera.setValue(alumno.getCarrera());
+        gridPane.add(comboBoxCarrera, 1, 5, 2, 1);
+        
+        labelJornada = new Label("Jornada :");
+        labelJornada.setId("labels");
+        gridPane.add(labelJornada, 0, 6);
+        
+        choiceBoxJornada = new ChoiceBox();
+        choiceBoxJornada.setValue(alumno.getJornada());
+        choiceBoxJornada.getItems().addAll("Matutina", "Vespertina");
+        gridPane.add(choiceBoxJornada, 1, 6, 2, 1);
+        
+        labelTelefono = new Label("No. Teléfono :");
+        labelTelefono.setId("labels");
+        gridPane.add(labelTelefono, 0, 7);
+        
+        textFieldTelefono = new TextField();
+        stringTelefono = String.valueOf(alumno.getTelefono());
+        textFieldTelefono.setText(stringTelefono);
+        textFieldTelefono.setPromptText("Teléfono de los Padres");
+        gridPane.add(textFieldTelefono, 1, 7, 2, 1);
+        
+        labelDireccion = new Label("Dirección :");
+        labelDireccion.setId("labels");
+        gridPane.add(labelDireccion, 0, 8);
+        
+        textFieldDireccion = new TextField();
+        textFieldDireccion.setText(alumno.getDireccion());
+        textFieldDireccion.setPromptText("Dirección del Alumno");
+        gridPane.add(textFieldDireccion, 1, 8, 2, 1);
+        
+        buttonModificar = new Button("Modificar");
+        buttonModificar.setId("buttonModificar");
+        buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                modificarAlumno(textFieldNombre.getText(), 
+                        textFieldApellido.getText(), 
+                        datePicker.getValue(), 
+                        comboBoxGrado.getSelectionModel().getSelectedItem(), 
+                        comboBoxCarrera.getSelectionModel().getSelectedItem(), 
+                        choiceBoxJornada.getSelectionModel().getSelectedItem().toString(), 
+                        a = Integer.parseInt(textFieldTelefono.getText()), 
+                        textFieldDireccion.getText(),
+                        alumno.getIdAlumno());
+                CRUDAlumno.getInstance().reiniciarhBoxCRUD();
+                CRUDAlumno.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDAlumno.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonModificar, 1, 9);
+        gridPane.add(buttonCerrar, 2, 9, 2, 1);
+        return gridPane;
+    }
+    
+    private void modificarAlumno(String nombres, String apellidos, LocalDate fechaNacimiento, Grado grado, Carrera carrera, 
+            String jornada, int telefono, String direccion, int idAlumno) {
+        ControladorAlumno.getInstance().modificarAlumno(nombres, 
+                apellidos, 
+                fechaNacimiento, 
+                grado.getIdGrado(), 
+                carrera.getIdCarrera(), 
+                jornada, 
+                telefono, 
+                direccion,
+                idAlumno);
+    }
+    
+    public void actualizarObservableListGrado() {
+        observableListGrado = FXCollections.observableArrayList(ControladorGrado.getInstance().getArrayList());
+    }
+    
+    public void actualizarObservableListCarrera() {
+        observableListCarrera = FXCollections.observableArrayList(ControladorCarrera.getInstance().getArrayList());
+    }
+}
+
+class VerAlumno {
+    public static VerAlumno instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelApellido;
+    private TextField textFieldApellido;
+    private Label labelFecha;
+    private DatePicker datePicker;
+    private Label labelGrado;
+    private ComboBox<Grado> comboBoxGrado;
+    private Label labelCarrera;
+    private ComboBox<Carrera> comboBoxCarrera;
+    private Label labelJornada;
+    private TextField textFieldJornada;
+    private Label labelTelefono;
+    private TextField textFieldTelefono;
+    private Label labelDireccion;
+    private TextField textFieldDireccion;
+    private Button buttonCerrar;
+    private String stringTelefono;
+    private Date date;
+    private int a = 0;
+
+    private VerAlumno() {
+    }
+
+    public static VerAlumno getInstance() {
+        if (instance == null) {
+            instance = new VerAlumno();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Alumno alumno) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Vista de Alumno");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombres :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setText(alumno.getNombres());
+        textFieldNombre.setEditable(false);
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelApellido = new Label("Apellidos :");
+        labelApellido.setId("labels");
+        gridPane.add(labelApellido, 0, 2);
+                
+        textFieldApellido = new TextField();
+        textFieldApellido.setText(alumno.getApellidos());
+        textFieldApellido.setEditable(false);
+        gridPane.add(textFieldApellido, 1, 2, 2, 1);
+        
+        labelFecha = new Label("Fecha de Nacimiento :");
+        labelFecha.setId("labels");
+        gridPane.add(labelFecha, 0, 3);
+        
+        datePicker = new DatePicker();
+        datePicker.setEditable(false);
+        date = new Date(); 
+        date = alumno.getFechaNacimiento();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        LocalDate localDateNuevo = LocalDate.of(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DAY_OF_MONTH));
+        datePicker.setValue(localDateNuevo);
+        gridPane.add(datePicker, 1, 3, 2, 1);
+        
+        labelGrado = new Label("Grado :");
+        labelGrado.setId("labels");
+        gridPane.add(labelGrado, 0, 4);
+        
+        comboBoxGrado = new ComboBox<>();
+        comboBoxGrado.setValue(alumno.getGrado());
+        comboBoxGrado.setEditable(false);
+        gridPane.add(comboBoxGrado, 1, 4, 2, 1);
+        
+        labelCarrera = new Label("Carrera :");
+        labelCarrera.setId("labels");
+        gridPane.add(labelCarrera, 0, 5);
+        
+        comboBoxCarrera = new ComboBox<>();
+        comboBoxCarrera.setValue(alumno.getCarrera());
+        comboBoxCarrera.setEditable(false);
+        gridPane.add(comboBoxCarrera, 1, 5, 2, 1);
+        
+        labelJornada = new Label("Jornada :");
+        labelJornada.setId("labels");
+        gridPane.add(labelJornada, 0, 6);
+        
+        textFieldJornada = new TextField();
+        textFieldJornada.setText(alumno.getJornada());
+        textFieldJornada.setEditable(false);
+        gridPane.add(textFieldJornada, 1, 6, 2, 1);
+        
+        labelTelefono = new Label("No. Teléfono :");
+        labelTelefono.setId("labels");
+        gridPane.add(labelTelefono, 0, 7);
+        
+        textFieldTelefono = new TextField();
+        stringTelefono = String.valueOf(alumno.getTelefono());
+        textFieldTelefono.setText(stringTelefono);
+        textFieldTelefono.setEditable(false);
+        gridPane.add(textFieldTelefono, 1, 7, 2, 1);
+        
+        labelDireccion = new Label("Dirección :");
+        labelDireccion.setId("labels");
+        gridPane.add(labelDireccion, 0, 8);
+        
+        textFieldDireccion = new TextField();
+        textFieldDireccion.setText(alumno.getDireccion());
+        textFieldDireccion.setEditable(false);
+        gridPane.add(textFieldDireccion, 1, 8, 2, 1);
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDAlumno.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonCerrar, 1, 9);
+        return gridPane;
     }
 }

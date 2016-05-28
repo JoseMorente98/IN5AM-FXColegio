@@ -143,6 +143,17 @@ public class CRUDCarrera {
         
         buttonVer = new Button("Ver");
         buttonVer.setId("buttonVer");
+        buttonVer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                if (tableViewCarrera.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, VerCarrera.getInstance().getGridPane((Carrera) tableViewCarrera.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
+            }
+        });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
                 buttonVer);
@@ -336,6 +347,70 @@ class ModificarCarrera {
         
         gridPane.add(buttonModificar, 1, 3);
         gridPane.add(buttonCerrar, 2, 3 , 2, 1);
+        return gridPane;
+    }
+}
+
+class VerCarrera {
+    private static VerCarrera instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelDescripcion;
+    private TextField textFieldDescripcion;
+    private Button buttonCerrar;
+
+    private VerCarrera() {
+    }
+
+    public static VerCarrera getInstance() {
+        if (instance == null) {
+            instance = new VerCarrera();
+        }
+        return instance;
+    }
+    
+    public GridPane getGridPane(Carrera carrera) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Vista de Carrera");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelNombre = new Label("Nombre :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 1);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setEditable(false);
+        textFieldNombre.setText(carrera.getNombre());
+        gridPane.add(textFieldNombre, 1, 1, 2, 1);
+        
+        labelDescripcion = new Label("Descripción :");
+        labelDescripcion.setId("labels");
+        gridPane.add(labelDescripcion, 0, 2);
+                
+        textFieldDescripcion = new TextField();
+        textFieldDescripcion.setEditable(false);
+        textFieldDescripcion.setText(carrera.getDescripcion());
+        gridPane.add(textFieldDescripcion, 1, 2, 2, 1);
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDCarrera.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonCerrar, 1, 3);
         return gridPane;
     }
 }
