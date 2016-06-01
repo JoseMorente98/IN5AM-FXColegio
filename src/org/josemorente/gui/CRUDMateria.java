@@ -161,7 +161,7 @@ public class CRUDMateria {
         tableColumnIdMateria = new TableColumn<>();
         tableColumnIdMateria.setText("ID Materia");
         tableColumnIdMateria.setCellValueFactory(new PropertyValueFactory<>("idMateria") );
-        tableColumnIdMateria.setMinWidth(50);
+        tableColumnIdMateria.setMinWidth(100);
         
         tableColumnNombre = new TableColumn<>();
         tableColumnNombre.setText("Materias");
@@ -171,7 +171,7 @@ public class CRUDMateria {
         tableColumnDescripcion = new TableColumn<>();
         tableColumnDescripcion.setText("Descripción");
         tableColumnDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        tableColumnDescripcion.setMinWidth(300);
+        tableColumnDescripcion.setMinWidth(275);
         
         actualizarObservableList();
         tableViewMateria = new TableView<>(observableList);
@@ -191,7 +191,7 @@ public class CRUDMateria {
     }
        
     public void actualizarObservableList() {
-        observableList = FXCollections.observableArrayList(ControladorMateria.getInstance().getArrayListMateria());
+        observableList = FXCollections.observableArrayList(ControladorMateria.getInstance().getArrayList());
     }
 }
 

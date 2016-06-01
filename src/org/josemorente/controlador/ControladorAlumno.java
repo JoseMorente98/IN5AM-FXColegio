@@ -72,4 +72,20 @@ public class ControladorAlumno {
                 + "idCarrera = " + idCarrera + ", jornada = '" + jornada + "', telefono = " + telefono + ", direccion = '" + direccion + "' WHERE idAlumno = " + idAlumno+ ";";
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
+    
+    //Eliminar Alumno
+    public void eliminarAlumno(int idAlumno) {
+        String query = "DELETE Alumno WHERE idAlumno = " + idAlumno + ";";
+        SQLDatabaseConnection.getInstance().executeQuery(query);
+    }
+    
+    //Buscar Alumno
+    public Alumno buscar(int idAlumno) {
+        for(Alumno alumno: arrayListAlumno) {
+            if (alumno.getIdAlumno() == idAlumno) {
+                return alumno;
+            }
+        }
+        return null;
+    }
 }

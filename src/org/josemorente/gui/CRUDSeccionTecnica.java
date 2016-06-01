@@ -22,7 +22,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.josemorente.beans.SeccionTecnica;
-import org.josemorente.controlador.ControladorSeccionAcademica;
 import org.josemorente.controlador.ControladorSeccionTecnica;
 
 /**
@@ -162,7 +161,7 @@ public class CRUDSeccionTecnica {
         tableColumnIdSeccion = new TableColumn<>();
         tableColumnIdSeccion.setText("ID Sección");
         tableColumnIdSeccion.setCellValueFactory(new PropertyValueFactory<>("idSeccionTecnica") );
-        tableColumnIdSeccion.setMinWidth(50);
+        tableColumnIdSeccion.setMinWidth(100);
         
         tableColumnNombre = new TableColumn<>();
         tableColumnNombre.setText("Secciones");
@@ -172,7 +171,7 @@ public class CRUDSeccionTecnica {
         tableColumnDescripcion = new TableColumn<>();
         tableColumnDescripcion.setText("Descripción");
         tableColumnDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        tableColumnDescripcion.setMinWidth(300);
+        tableColumnDescripcion.setMinWidth(275);
         
         actualizarObservableList();
         tableViewSeccionTecnica = new TableView<>(observableList);

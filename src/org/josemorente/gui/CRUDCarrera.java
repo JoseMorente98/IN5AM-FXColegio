@@ -162,7 +162,7 @@ public class CRUDCarrera {
         tableColumnIdCarrera = new TableColumn<>();
         tableColumnIdCarrera.setText("ID Carrera");
         tableColumnIdCarrera.setCellValueFactory(new PropertyValueFactory<>("idCarrera") );
-        tableColumnIdCarrera.setMinWidth(50);
+        tableColumnIdCarrera.setMinWidth(100);
         
         tableColumnNombre = new TableColumn<>();
         tableColumnNombre.setText("Carreras");
@@ -172,7 +172,7 @@ public class CRUDCarrera {
         tableColumnDescripcion = new TableColumn<>();
         tableColumnDescripcion.setText("Descripción");
         tableColumnDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        tableColumnDescripcion.setMinWidth(300);
+        tableColumnDescripcion.setMinWidth(275);
         
         actualizarObservableList();
         tableViewCarrera = new TableView<>(observableList);

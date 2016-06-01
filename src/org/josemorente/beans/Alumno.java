@@ -97,4 +97,10 @@ public class Alumno {
         this.direccion = direccion;
     }
 
+    @Override
+    public String toString() {
+        return this.nombres;
+    }
+
+    
 }

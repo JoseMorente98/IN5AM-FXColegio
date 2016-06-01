@@ -142,7 +142,10 @@ public class CRUDAlumno {
         buttonEliminar.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                if (tableViewAlumno.getSelectionModel().getSelectedItem() != null) {
+                    ControladorAlumno.getInstance().eliminarAlumno(tableViewAlumno.getSelectionModel().getSelectedItem().getIdAlumno());
+                    actualizarTableViewItems();
+                }
             }
         });
         
@@ -176,7 +179,7 @@ public class CRUDAlumno {
         tableColumnIdAlumno = new TableColumn<>();
         tableColumnIdAlumno.setText("ID Alumno");
         tableColumnIdAlumno.setCellValueFactory(new PropertyValueFactory<>("idAlumno"));
-        tableColumnIdAlumno.setMinWidth(20);
+        tableColumnIdAlumno.setMinWidth(100);
         
         tableColumnNombre = new TableColumn<>();
         tableColumnNombre.setText("Nombres");

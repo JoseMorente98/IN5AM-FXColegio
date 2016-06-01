@@ -79,4 +79,8 @@ public class Profesor {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    @Override
+    public String toString() {
+        return this.nombres;
+    }  
 }

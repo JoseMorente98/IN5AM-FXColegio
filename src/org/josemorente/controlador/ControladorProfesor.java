@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.josemorente.beans.Materia;
 import org.josemorente.beans.Profesor;
 import org.josemorente.database.SQLDatabaseConnection;
 
@@ -20,7 +21,9 @@ import org.josemorente.database.SQLDatabaseConnection;
  */
 public class ControladorProfesor {
     public static ControladorProfesor instance;
-    private ArrayList<Profesor> arrayListProfesor; 
+    private ArrayList<Profesor> arrayListProfesor;
+    private ArrayList<Materia> arrayListMateria;
+    private ArrayList<Profesor> arrayListProfesorMateria;
 
     public static ControladorProfesor getInstance() {
         if (instance == null) {
@@ -31,6 +34,8 @@ public class ControladorProfesor {
     
     private ControladorProfesor() {
         arrayListProfesor = new ArrayList<>();
+        arrayListMateria = new ArrayList<>();
+        arrayListProfesorMateria = new ArrayList<>();
     }
     
     //Agregar Profesor
@@ -74,4 +79,15 @@ public class ControladorProfesor {
         String query = "DELETE FROM Profesor WHERE idProfesor = " +idProfesor;
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
+    
+    //Buscar Profesor
+    public Profesor buscar(int idProfesor) {
+        for(Profesor profesor: arrayListProfesor) {
+            if (profesor.getIdProfesor() == idProfesor) {
+                return profesor;
+            }
+        }
+        return null;
+    }
+    
 }

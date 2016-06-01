@@ -67,4 +67,14 @@ public class ControladorSeccionTecnica {
         String query = "DELETE SeccionTecnica WHERE idSeccionTecnica = " + idSeccionTecnica + ";";
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
+    
+    //Buscar Seccion Tecnica
+    public SeccionTecnica buscar(int idSeccionTecnica) {
+        for (SeccionTecnica seccionTecnica: arrayListTecnica) {
+            if (seccionTecnica.getIdSeccionTecnica()== idSeccionTecnica) {
+                return seccionTecnica;
+            }
+        }
+        return null;
+    }
 }

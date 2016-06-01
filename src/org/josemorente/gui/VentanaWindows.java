@@ -42,7 +42,11 @@ public class VentanaWindows extends Application {
     private Tab tabCarrera;
     private Tab tabGrado;
     private Tab tabSeccionTecnica;
+    private Tab tabSeccionAcademica;
     private Tab tabAlumno;
+    private Tab tabAsignacionSA;
+    private Tab tabAsignacionST;
+    private Tab tabAsignacion;
     private StackPane stackPane;
 
     public static VentanaWindows getInstance() {
@@ -144,12 +148,28 @@ public class VentanaWindows extends Application {
         tabSeccionTecnica.setId("tabPane");
         tabSeccionTecnica.setContent(CRUDSeccionTecnica.getInstance().gethBoxCRUD());
         
+        tabSeccionAcademica = new Tab("Secciones Académicas");
+        tabSeccionAcademica.setId("tabPane");
+        tabSeccionAcademica.setContent(CRUDSeccionAcademica.getInstance().gethBoxCRUD());
+                
         tabAlumno = new Tab("Alumnos");
         tabAlumno.setId("tabPane");
         tabAlumno.setContent(CRUDAlumno.getInstance().gethBoxCRUD());
         
-        tabPane.getTabs().addAll(tabUsuario, tabProfesor, tabMateria, tabCarrera, tabGrado, tabSeccionTecnica,
-                tabAlumno);
+        tabAsignacion = new Tab("Profesor & Materia");
+        tabAsignacion.setId("tabPane");
+        tabAsignacion.setContent(CRUDProfesorMateria.getInstance().gethBoxCRUD());
+        
+        tabAsignacionSA = new Tab("Alumno & Académicas");
+        tabAsignacionSA.setId("tabPane");
+        tabAsignacionSA.setContent(CRUDAlumnoSA.getInstance().gethBoxCRUD());
+        
+        tabAsignacionST = new Tab("Alumno & Técnicas");
+        tabAsignacionST.setId("tabPane");
+        tabAsignacionST.setContent(CRUDAlumnoST.getInstance().gethBoxCRUD());
+        
+        tabPane.getTabs().addAll(tabUsuario, tabProfesor, tabMateria, tabAsignacion, tabCarrera, tabGrado, tabSeccionAcademica, tabSeccionTecnica,
+                tabAlumno, tabAsignacionST, tabAsignacionSA);
         return tabPane;
     }
     

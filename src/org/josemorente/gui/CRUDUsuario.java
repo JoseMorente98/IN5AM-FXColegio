@@ -164,22 +164,22 @@ public class CRUDUsuario {
         tableColumnIdUsuario = new TableColumn<>();
         tableColumnIdUsuario.setText("ID Usuario");
         tableColumnIdUsuario.setCellValueFactory(new PropertyValueFactory<>("idUsuario") );
-        tableColumnIdUsuario.setMinWidth(50);
+        tableColumnIdUsuario.setMinWidth(100);
         
         tableColumnActivo = new TableColumn<>();
         tableColumnActivo.setText("Activo");
         tableColumnActivo.setCellValueFactory(new PropertyValueFactory<>("activo"));
-        tableColumnActivo.setMinWidth(50);
+        tableColumnActivo.setMinWidth(70);
         
         tableColumnUsuario = new TableColumn<>();
         tableColumnUsuario.setText("Usuarios");
         tableColumnUsuario.setCellValueFactory(new PropertyValueFactory<>("usuario"));
-        tableColumnUsuario.setMinWidth(200);
+        tableColumnUsuario.setMinWidth(190);
         
         tableColumnClave = new TableColumn<>();
         tableColumnClave.setText("Password");
         tableColumnClave.setCellValueFactory(new PropertyValueFactory<>("password"));
-        tableColumnClave.setMinWidth(200);
+        tableColumnClave.setMinWidth(190);
         
         actualizarObservableList();
         tableView = new TableView<>(observableList);

@@ -68,7 +68,7 @@ public class CRUDProfesor {
     
     public void reiniciarhBoxCRUD() {
         hBoxCRUD.getChildren().clear();
-        hBoxCRUD.getChildren().add(gridPane);
+        hBoxCRUD.getChildren().addAll(gridPane);
     }
 
     public HBox gethBoxCRUD() {
@@ -122,7 +122,7 @@ public class CRUDProfesor {
                 if (tableViewProfesor.getSelectionModel().getSelectedItem() != null) {
                     hBoxCRUD.getChildren().addAll(gridPane, ModificarProfesor.getInstance().getGridPane((Profesor) tableViewProfesor.getSelectionModel().getSelectedItem()));
                 } else {
-                    hBoxCRUD.getChildren().add(gridPane);
+                    hBoxCRUD.getChildren().addAll(gridPane);
                 }
             }
         });
@@ -157,7 +157,7 @@ public class CRUDProfesor {
                 if (tableViewProfesor.getSelectionModel().getSelectedItem() != null) {
                     hBoxCRUD.getChildren().addAll(gridPane, VerProfesor.getInstance().getGridPane((Profesor) tableViewProfesor.getSelectionModel().getSelectedItem()));
                 } else {
-                    hBoxCRUD.getChildren().add(gridPane);
+                    hBoxCRUD.getChildren().addAll(gridPane);
                 }
             }
         });
@@ -169,7 +169,7 @@ public class CRUDProfesor {
         tableColumnIdProfesor = new TableColumn<>();
         tableColumnIdProfesor.setText("ID Profesor");
         tableColumnIdProfesor.setCellValueFactory(new PropertyValueFactory<>("idProfesor") );
-        tableColumnIdProfesor.setMinWidth(50);
+        tableColumnIdProfesor.setMinWidth(100);
         
         tableColumnNombre = new TableColumn<>();
         tableColumnNombre.setText("Nombres");
@@ -209,7 +209,7 @@ public class CRUDProfesor {
         
         gridPane.add(tableViewProfesor, 0, 3, 2, 1);
        
-        hBoxCRUD.getChildren().add(gridPane);
+        hBoxCRUD.getChildren().addAll(gridPane);
         
         return hBoxCRUD;
     }
@@ -222,6 +222,11 @@ public class CRUDProfesor {
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorProfesor.getInstance().getArrayList());
     }
+    
+    /*public void asignar(Materia materia) {
+    AsignarMateria.getInstance().agregarAsignacion(tableViewProfesor.getSelectionModel().getSelectedItem(),
+    materia);
+    }*/
     
 }
 
@@ -611,3 +616,81 @@ class VerProfesor {
         return gridPane;
     }
 }
+
+/*class AsignarMateria {
+private static AsignarMateria instance;
+private GridPane gridPane;
+ListView<Materia> listViewMateria;
+TableColumn<Asignacion, Materia> tableColumnAsignacion;
+ListView<Asignacion> listViewAsignacion;
+Button buttonAgregar;
+Button buttonQuitar;
+ObservableList<Materia> observableListMateria;
+ObservableList<Asignacion> observableListAsignacion;
+
+private AsignarMateria() {
+}
+
+public static AsignarMateria getInstance() {
+if (instance == null) {
+instance = new AsignarMateria();
+}
+return instance;
+}
+
+public GridPane getGridPane() {
+Materia materia = new Materia();
+gridPane = new GridPane();
+gridPane.setVgap(10);
+gridPane.setHgap(10);
+gridPane.setGridLinesVisible(false);
+gridPane.setPadding(new Insets(25, 25, 25, 25));
+
+actualizarObservableListMateria();
+listViewMateria = new ListView<>();
+listViewMateria.setItems(observableListMateria);
+listViewMateria.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+listViewMateria.setMaxSize(200, 200);
+gridPane.add(listViewMateria, 0, 25);
+
+actualizarObservableListAsignación();
+listViewAsignacion = new ListView<>();
+listViewAsignacion.setItems(observableListAsignacion);
+listViewAsignacion.setMaxSize(200, 200);
+gridPane.add(listViewAsignacion, 1, 25, 2, 1);
+
+buttonAgregar = new Button("Agregar >>");
+buttonAgregar.setId("buttonAgregar");
+buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
+@Override
+public void handle(ActionEvent event) {
+//String seleccion = null;
+//seleccion = String.valueOf(listViewMateria.getSelectionModel().getSelectedItems());
+CRUDProfesor.getInstance().asignar(listViewMateria.getSelectionModel().getSelectedItem());
+observableListAsignacion.addAll(listViewAsignacion.getSelectionModel().getSelectedItems());
+// observableListAsignacion.add(seleccion);
+observableListMateria.removeAll(listViewMateria.getSelectionModel().getSelectedItems());
+}
+});
+buttonQuitar = new Button("<< Quitar");
+buttonQuitar.setId("buttonEliminar");
+gridPane.add(buttonAgregar, 0, 26);
+gridPane.add(buttonQuitar, 1, 26, 2, 1);
+
+return gridPane;
+}
+
+public void actualizarObservableListMateria() {
+observableListMateria = FXCollections.observableArrayList(ControladorMateria.getInstance().getArrayList());
+}
+
+public void actualizarObservableListAsignación() {
+observableListAsignacion = FXCollections.observableArrayList(ControladorAsignacion.getInstance().getArrayList());
+}
+
+public void agregarAsignacion(Profesor profesor, Materia materia) {
+ControladorAsignacion.getInstance().agregarAsignación(profesor.getIdProfesor(),
+materia.getIdMateria());
+}
+
+}*/

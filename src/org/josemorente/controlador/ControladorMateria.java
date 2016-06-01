@@ -39,7 +39,7 @@ public class ControladorMateria {
     }
 
     //Mostrar Materia
-    public ArrayList<Materia> getArrayListMateria() {
+    public ArrayList<Materia> getArrayList() {
         arrayListMateria.clear();
         ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Materia");
         try {
@@ -66,5 +66,31 @@ public class ControladorMateria {
     public void eliminarMateria(int idMateria) {
         String query = "DELETE FROM Materia WHERE idMateria = " + idMateria + ";";
         SQLDatabaseConnection.getInstance().executeQuery(query);
+    }
+    
+    //Buscar Materia
+    public Materia buscar(int idMateria) {
+        for (Materia materia: arrayListMateria) {
+            if (materia.getIdMateria() == idMateria) {
+                return materia;
+            }
+        }
+        return null;
+    }
+    
+    //Mostrar Solo Materias
+    public ArrayList<Materia> getArrayListMateria() {
+        arrayListMateria.clear();
+        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Materia;");
+        try {
+            while(resultSet.next()) {
+                Materia materia = new Materia();
+                materia.setNombre(resultSet.getString("nombre"));
+                arrayListMateria.add(materia);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorProfesor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arrayListMateria;
     }
 }

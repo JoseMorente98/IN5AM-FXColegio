@@ -165,7 +165,7 @@ public class CRUDGrado {
         tableColumnIdGrado = new TableColumn<>();
         tableColumnIdGrado.setText("ID Grado");
         tableColumnIdGrado.setCellValueFactory(new PropertyValueFactory<>("idGrado") );
-        tableColumnIdGrado.setMinWidth(50);
+        tableColumnIdGrado.setMinWidth(100);
         
         tableColumnNombre = new TableColumn<>();
         tableColumnNombre.setText("Grados");
@@ -175,7 +175,7 @@ public class CRUDGrado {
         tableColumnDescripcion = new TableColumn<>();
         tableColumnDescripcion.setText("Descripción");
         tableColumnDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        tableColumnDescripcion.setMinWidth(300);
+        tableColumnDescripcion.setMinWidth(275);
         
         actualizarObservableList();
         tableViewGrado = new TableView<>(observableList);
