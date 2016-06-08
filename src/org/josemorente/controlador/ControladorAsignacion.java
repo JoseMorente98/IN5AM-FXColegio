@@ -21,7 +21,6 @@ import org.josemorente.database.SQLDatabaseConnection;
 public class ControladorAsignacion {
     private static ControladorAsignacion instance;
     private ArrayList<Asignacion> arrayListAsignacion;
-    private Materia materia = new Materia();
 
     private ControladorAsignacion() {
         this.arrayListAsignacion = new ArrayList<>();
@@ -35,33 +34,37 @@ public class ControladorAsignacion {
     }
 
     //Agregar Asignacion
-    public void agregarAsignacion(int idProfesor, int idMateria) {
-        String query = "INSERT INTO ProfesorMateria(idProfesor, idMateria) VALUES(" + idProfesor + ", " + idMateria + ");";
+    public void agregarAsignacion(int idProfesor, int idMateria, int idSeccionT, int idSeccionA) {
+        String query = "INSERT INTO ProfesorMateriaSeccion(idProfesor, idMateria, idSeccionTecnica, idSeccionAcademica)"
+                + " VALUES (" + idProfesor + ", " + idMateria + ", " + idSeccionT + ", " + idSeccionA + ");";
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
     
     //Mostrar Asignación
-    public ArrayList<Asignacion> getArrayList() {
+    public ArrayList<Asignacion> getArrayListAsignacion() {
         arrayListAsignacion.clear();
-        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM ProfesorMateria;");
+        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM ProfesorMateriaSeccion;");
         try {
             while (resultSet.next()) {
                 Asignacion asignacion = new Asignacion();
-                asignacion.setIdAsignacion(resultSet.getInt("idProfesorMateria"));
+                asignacion.setIdAsignacion(resultSet.getInt("idProfesorMateriaSeccion"));
                 asignacion.setProfesor(ControladorProfesor.getInstance().buscar(resultSet.getInt("idProfesor")));
                 asignacion.setMateria(ControladorMateria.getInstance().buscar(resultSet.getInt("idMateria")));
+                asignacion.setSeccionTecnica(ControladorSeccionTecnica.getInstance().buscar(resultSet.getInt("idSeccionTecnica")));
+                asignacion.setSeccionAcademica(ControladorSeccionAcademica.getInstance().buscar(resultSet.getInt("idSeccionAcademica")));
                 arrayListAsignacion.add(asignacion);
-            }
+            }   
         } catch (SQLException ex) {
             Logger.getLogger(ControladorAsignacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         SQLDatabaseConnection.getInstance().desconectar();
         return arrayListAsignacion;
     }
-    
+        
     //Quitar Asignacion
     public void quitarAsignacion(int idAsignacion) {
-        String query = "DELETE ProfesorMateria WHERE idProfesorMateria = " + idAsignacion+ ";";
+        String query = "DELETE ProfesorMateriaSeccion WHERE idProfesorMateriaSeccion = " + idAsignacion + ";";
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
+    
 }

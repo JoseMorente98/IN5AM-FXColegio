@@ -14,9 +14,8 @@ and open the template in the editor.
 }
 
 #buttonLogin {
-    -fx-base: BLACK; 
+    -fx-base: #000000; 
     -fx-border-color: #ffffff;
-    -fx-background-color: #000000;
     -fx-font-size: 10pt;
     -fx-text-fill: #ffffff;
 }

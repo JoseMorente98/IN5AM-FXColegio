@@ -42,6 +42,7 @@ public class CRUDSeccionAcademica {
     private Button buttonEliminar;
     private Button buttonActualizar;
     private Button buttonVer;
+    private Button buttonAtras;
     private TableView<SeccionAcademica> tableViewSeccionAcademica;
     private TableColumn<SeccionAcademica, Integer> tableColumnIdSeccion;
     private TableColumn<SeccionAcademica, String> tableColumnNombre;
@@ -154,8 +155,18 @@ public class CRUDSeccionAcademica {
             }
         });
         
+        buttonAtras = new Button("<< Atrás");
+        buttonAtras.setId("buttonCerrar");
+        buttonAtras.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                hBoxCRUD.getChildren().add(CRUDSecciones.getInstance().gethBoxCRUD());
+            }
+        });
+        
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
-                buttonVer);
+                buttonVer, buttonAtras);
         gridPane.add(hBoxButtons, 0, 2);
         
         tableColumnIdSeccion = new TableColumn<>();

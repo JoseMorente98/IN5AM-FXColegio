@@ -79,6 +79,7 @@ public class Login extends Stage {
         
         buttonLogin = new Button("Ingresar");
         buttonLogin.setId("buttonLogin");
+        buttonLogin.setDefaultButton(true);
         buttonLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

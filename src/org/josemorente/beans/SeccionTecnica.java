@@ -46,5 +46,4 @@ public class SeccionTecnica {
         return this.nombre;
     }
     
-    
 }

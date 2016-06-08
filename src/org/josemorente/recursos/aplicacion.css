@@ -48,11 +48,19 @@ and open the template in the editor.
 }
 
 #buttonCerrar {
-    -fx-base: BLACK;
+    -fx-base: #000000;
 }
 
 #buttonVer {
     -fx-base: rgb(128,0,64);
+}
+
+#buttonST {
+    -fx-base: rgb(127,127,127);
+}
+
+#buttonSA {
+    -fx-base: rgb(0,0,128);
 }
 
 #titulo {
@@ -144,4 +152,24 @@ and open the template in the editor.
 
 .table-view:focused .table-row-cell:filled:focused:selected {
     -fx-background-color: -fx-focus-color;
+}
+
+.list-view {
+    -fx-base: #000033;
+    -fx-control-inner-background: #000033;
+    -fx-background-color: #000033;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.scroll-bar {
+    
+    -fx-base-color: #0066cc;
+}
+
+.scroll-bar .thumb{
+    -fx-background-color: #000066;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
 }

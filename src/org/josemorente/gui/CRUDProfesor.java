@@ -16,16 +16,23 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import org.josemorente.beans.Asignacion;
+import org.josemorente.beans.Materia;
 import org.josemorente.beans.Profesor;
+import org.josemorente.controlador.ControladorAsignacion;
+import org.josemorente.controlador.ControladorMateria;
 import org.josemorente.controlador.ControladorProfesor;
 
 /**
@@ -205,7 +212,7 @@ public class CRUDProfesor {
         tableViewProfesor = new TableView<>(observableList);
         tableViewProfesor.getColumns().addAll(tableColumnIdProfesor, tableColumnNombre,
                 tableColumnApellidos, tableColumnFechaNacimiento, tableColumnDpi, 
-                tableColumnTelefono, tableColumnDireccion);
+                tableColumnTelefono, tableColumnDireccion);        
         
         gridPane.add(tableViewProfesor, 0, 3, 2, 1);
        
@@ -222,11 +229,6 @@ public class CRUDProfesor {
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorProfesor.getInstance().getArrayList());
     }
-    
-    /*public void asignar(Materia materia) {
-    AsignarMateria.getInstance().agregarAsignacion(tableViewProfesor.getSelectionModel().getSelectedItem(),
-    materia);
-    }*/
     
 }
 
@@ -616,81 +618,3 @@ class VerProfesor {
         return gridPane;
     }
 }
-
-/*class AsignarMateria {
-private static AsignarMateria instance;
-private GridPane gridPane;
-ListView<Materia> listViewMateria;
-TableColumn<Asignacion, Materia> tableColumnAsignacion;
-ListView<Asignacion> listViewAsignacion;
-Button buttonAgregar;
-Button buttonQuitar;
-ObservableList<Materia> observableListMateria;
-ObservableList<Asignacion> observableListAsignacion;
-
-private AsignarMateria() {
-}
-
-public static AsignarMateria getInstance() {
-if (instance == null) {
-instance = new AsignarMateria();
-}
-return instance;
-}
-
-public GridPane getGridPane() {
-Materia materia = new Materia();
-gridPane = new GridPane();
-gridPane.setVgap(10);
-gridPane.setHgap(10);
-gridPane.setGridLinesVisible(false);
-gridPane.setPadding(new Insets(25, 25, 25, 25));
-
-actualizarObservableListMateria();
-listViewMateria = new ListView<>();
-listViewMateria.setItems(observableListMateria);
-listViewMateria.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-listViewMateria.setMaxSize(200, 200);
-gridPane.add(listViewMateria, 0, 25);
-
-actualizarObservableListAsignación();
-listViewAsignacion = new ListView<>();
-listViewAsignacion.setItems(observableListAsignacion);
-listViewAsignacion.setMaxSize(200, 200);
-gridPane.add(listViewAsignacion, 1, 25, 2, 1);
-
-buttonAgregar = new Button("Agregar >>");
-buttonAgregar.setId("buttonAgregar");
-buttonAgregar.setOnAction(new EventHandler<ActionEvent>() {
-@Override
-public void handle(ActionEvent event) {
-//String seleccion = null;
-//seleccion = String.valueOf(listViewMateria.getSelectionModel().getSelectedItems());
-CRUDProfesor.getInstance().asignar(listViewMateria.getSelectionModel().getSelectedItem());
-observableListAsignacion.addAll(listViewAsignacion.getSelectionModel().getSelectedItems());
-// observableListAsignacion.add(seleccion);
-observableListMateria.removeAll(listViewMateria.getSelectionModel().getSelectedItems());
-}
-});
-buttonQuitar = new Button("<< Quitar");
-buttonQuitar.setId("buttonEliminar");
-gridPane.add(buttonAgregar, 0, 26);
-gridPane.add(buttonQuitar, 1, 26, 2, 1);
-
-return gridPane;
-}
-
-public void actualizarObservableListMateria() {
-observableListMateria = FXCollections.observableArrayList(ControladorMateria.getInstance().getArrayList());
-}
-
-public void actualizarObservableListAsignación() {
-observableListAsignacion = FXCollections.observableArrayList(ControladorAsignacion.getInstance().getArrayList());
-}
-
-public void agregarAsignacion(Profesor profesor, Materia materia) {
-ControladorAsignacion.getInstance().agregarAsignación(profesor.getIdProfesor(),
-materia.getIdMateria());
-}
-
-}*/

@@ -13,6 +13,11 @@ public class Asignacion {
     private int idAsignacion;
     private Profesor profesor;
     private Materia materia;
+    private SeccionTecnica seccionTecnica;
+    private SeccionAcademica seccionAcademica;
+
+    public Asignacion() {
+    }
 
     public int getIdAsignacion() {
         return idAsignacion;
@@ -36,6 +41,22 @@ public class Asignacion {
 
     public void setMateria(Materia materia) {
         this.materia = materia;
+    }
+
+    public SeccionTecnica getSeccionTecnica() {
+        return seccionTecnica;
+    }
+
+    public void setSeccionTecnica(SeccionTecnica seccionTecnica) {
+        this.seccionTecnica = seccionTecnica;
+    }
+
+    public SeccionAcademica getSeccionAcademica() {
+        return seccionAcademica;
+    }
+
+    public void setSeccionAcademica(SeccionAcademica seccionAcademica) {
+        this.seccionAcademica = seccionAcademica;
     }
     
 }

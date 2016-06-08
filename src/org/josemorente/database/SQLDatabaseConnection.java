@@ -56,6 +56,10 @@ public class SQLDatabaseConnection {
         }
     }
     
+    public Connection getConnection() {
+        return connection;
+    }
+    
     public void desconectar() {
         if (resultSet != null) try {
             resultSet.close();
