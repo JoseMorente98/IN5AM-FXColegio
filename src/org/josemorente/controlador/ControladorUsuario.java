@@ -110,4 +110,15 @@ public class ControladorUsuario {
         this.autenticarUsuario = null;
     }
     
+    //Buscar Usuario
+    public ArrayList<Usuario> buscar(String usuario){
+        ArrayList<Usuario> resultado = new ArrayList<>(); 
+        for(Usuario search : getArrayList()){
+             if(search.getUsuario().toUpperCase().contains(usuario.toUpperCase())){
+                 resultado.add(search);
+             }
+         }
+         return resultado;
+    }
+    
 }

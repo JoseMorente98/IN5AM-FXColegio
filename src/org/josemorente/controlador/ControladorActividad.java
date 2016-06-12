@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.josemorente.beans.Actividad;
+import org.josemorente.beans.Materia;
 import org.josemorente.database.SQLDatabaseConnection;
 
 /**
@@ -20,6 +21,7 @@ import org.josemorente.database.SQLDatabaseConnection;
 public class ControladorActividad {
     private static ControladorActividad instance;
     private ArrayList<Actividad> arrayListActividad;
+    private ArrayList<Materia> arrayListMateria;
 
     private ControladorActividad() {
         this.arrayListActividad = new ArrayList<>();
@@ -79,4 +81,25 @@ public class ControladorActividad {
         }
         return null;
     }
+
+    //Materia
+    public ArrayList<Materia> getArrayListMateria(int idProfesor) {
+        arrayListMateria.clear();
+        String query = "SELECT * FROM Materia WHERE idMateria "
+                + "IN(SELECT idMateria FROM ProfesorMateriaSeccion WHERE idProfesor = " + idProfesor + ");";
+        ResultSet resultSet = SQLDatabaseConnection.getInstance().query(query);
+        try {
+            while(resultSet.next()) {
+                Materia materia = new Materia();
+                materia.setIdMateria(resultSet.getInt("idMateria"));
+                materia.setNombre(resultSet.getString("nombre"));
+                arrayListMateria.add(materia);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorActividad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        SQLDatabaseConnection.getInstance().desconectar();
+        return arrayListMateria;
+    }
+    
 }

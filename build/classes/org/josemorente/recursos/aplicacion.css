@@ -23,10 +23,6 @@ and open the template in the editor.
     -fx-background-radius: 0;
 }
 
-#buttonBuscar {
-    -fx-base: rgb(0,64,128);
-}
-
 #buttonNuevo {
     -fx-base: rgb(0,70,0);
 }
@@ -40,7 +36,7 @@ and open the template in the editor.
 }
 
 #buttonActualizar {
-    -fx-base : rgb(0,107,159);
+    -fx-base: rgb(0,64,128);
 }
 
 #buttonAgregar {
@@ -55,12 +51,20 @@ and open the template in the editor.
     -fx-base: rgb(128,0,64);
 }
 
+#buttonNota {
+    -fx-base: rgb(228,55,5);
+}
+
 #buttonST {
     -fx-base: rgb(127,127,127);
 }
 
 #buttonSA {
     -fx-base: rgb(0,0,128);
+}
+
+#buttonCalificar {
+    -fx-base: rgb(0,0,64);
 }
 
 #titulo {

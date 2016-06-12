@@ -92,16 +92,7 @@ public class CRUDProfesorAsignacion {
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Asignación");
         
-        buttonBuscar = new Button("Buscar");
-        buttonBuscar.setId("buttonBuscar");
-        buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        }); 
-        
-        hBoxBuscar.getChildren().addAll(textFieldBuscar, buttonBuscar);
+        hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
         
         hBoxButtons = new HBox(10);
@@ -148,7 +139,7 @@ public class CRUDProfesorAsignacion {
         tableColumnProfesor = new TableColumn<>();
         tableColumnProfesor.setText("Profesor");
         tableColumnProfesor.setCellValueFactory(new PropertyValueFactory<>("Profesor"));
-        tableColumnProfesor.setMinWidth(150);
+        tableColumnProfesor.setMinWidth(200);
         
         tableColumnMateria = new TableColumn<>();
         tableColumnMateria.setText("Materia");

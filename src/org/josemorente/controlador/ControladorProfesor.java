@@ -40,7 +40,8 @@ public class ControladorProfesor {
     
     //Agregar Profesor
     public void agregar(String nombres, String apellidos, LocalDate fechaNacimiento, String dpi, int telefono, String direccion) {
-        String query = "INSERT INTO Profesor(nombres, apellidos, fechaNacimiento, dpi, telefono, direccion) VALUES('" + nombres + "', '" + apellidos + "', '" + fechaNacimiento + "', '" + dpi + "'," + telefono +", '" + direccion + "');";
+        String query = "INSERT INTO Profesor(nombres, apellidos, fechaNacimiento, dpi, telefono, direccion) "
+                + "VALUES('" + nombres + "', '" + apellidos + "', '" + fechaNacimiento + "', '" + dpi + "'," + telefono +", '" + direccion + "');";
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
     

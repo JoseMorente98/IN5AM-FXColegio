@@ -67,4 +67,14 @@ public class ControladorAsignacion {
         SQLDatabaseConnection.getInstance().executeQuery(query);
     }
     
+    //Buscar Asignacion
+    public Asignacion buscar(int idAsignacion) {
+        for(Asignacion asignacion: arrayListAsignacion) {
+            if (asignacion.getIdAsignacion() == idAsignacion) {
+                return asignacion;
+            }
+        }
+        return null;
+    }
 }
+    

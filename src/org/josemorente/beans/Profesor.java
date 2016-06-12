@@ -81,6 +81,7 @@ public class Profesor {
 
     @Override
     public String toString() {
-        return this.nombres;
+        String profesor = nombres + " " + apellidos;
+        return profesor;
     }  
 }

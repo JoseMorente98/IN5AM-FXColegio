@@ -58,5 +58,10 @@ public class Asignacion {
     public void setSeccionAcademica(SeccionAcademica seccionAcademica) {
         this.seccionAcademica = seccionAcademica;
     }
+
+    @Override
+    public String toString() {
+        return this.profesor.getNombres();
+    }
     
 }

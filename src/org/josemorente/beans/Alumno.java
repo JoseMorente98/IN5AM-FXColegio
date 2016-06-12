@@ -99,7 +99,8 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return this.nombres;
+        String alumno = nombres + " " +apellidos;
+        return alumno;
     }
 
     

@@ -51,4 +51,11 @@ public class Actividad {
         this.punteo = punteo;
     }
 
+    @Override
+    public String toString() {
+        String actividad = nombre + " - "+ tipoActividad;
+        return actividad;
+    }
+
+    
 }
