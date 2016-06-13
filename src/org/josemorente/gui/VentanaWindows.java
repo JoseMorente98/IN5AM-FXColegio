@@ -149,10 +149,6 @@ public class VentanaWindows extends Application {
         tabSecciones.setId("tabPane");
         tabSecciones.setContent(CRUDSecciones.getInstance().gethBoxCRUD());
         
-        tabSalon = new Tab("Salon");
-        tabSalon.setId("tabPane");
-        tabSalon.setContent(CRUDSalon.getInstance().gethBoxCRUD());
-        
         tabAlumno = new Tab("Alumnos");
         tabAlumno.setId("tabPane");
         tabAlumno.setContent(CRUDAlumno.getInstance().gethBoxCRUD());
@@ -174,7 +170,7 @@ public class VentanaWindows extends Application {
         tabNotas.setContent(CRUDNotas.getInstance().gethBoxCRUD());
         
         tabPane.getTabs().addAll(tabUsuario, tabProfesor, tabMateria, tabSecciones, tabAsignacion, tabCarrera, tabGrado, 
-                tabSalon, tabAlumno, tabAsignacionA, tabActividad, tabNotas);
+                tabAlumno, tabAsignacionA, tabActividad, tabNotas);
         return tabPane;
     }
     
