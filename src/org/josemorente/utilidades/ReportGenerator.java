@@ -34,9 +34,9 @@ public class ReportGenerator {
         return instance;
     }
     
-    public void generate(Map parameters, String reportFile, String title) {
+    public void generate(Map parameters, String reporFile, String title) {
         try {
-            InputStream reporte = getClass().getResourceAsStream("org/josemorente/recursos/" + reportFile);
+            InputStream reporte = getClass().getResourceAsStream("/org/josemorente/recursos/" + reporFile);
             JasperReport jasperReport = (JasperReport) JRLoader.loadObject(reporte);
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, SQLDatabaseConnection.getInstance().getConnection());
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);

@@ -5,8 +5,10 @@
  */
 package org.josemorente.gui;
 
+import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -26,6 +28,7 @@ import org.josemorente.beans.Alumno;
 import org.josemorente.beans.SeccionTecnica;
 import org.josemorente.controlador.ControladorNotas;
 import org.josemorente.controlador.ControladorSeccionTecnica;
+import org.josemorente.utilidades.ReportGenerator;
 
 /**
  *
@@ -100,9 +103,18 @@ public class CRUDNotas {
             public void handle(MouseEvent event) {
                 buttonNota = new Button("Reporte");
                 buttonNota.setId("buttonNota");
-                gridPane.add(buttonNota, 2, 5);
+                buttonNota.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if (tableViewAlumno.getSelectionModel().getSelectedItem() != null) {
+                        reporte(tableViewAlumno.getSelectionModel().getSelectedItem().getIdAlumno());
+                    }
+                }
+            });
+         gridPane.add(buttonNota, 2, 5);
             }
         });
+        
         gridPane.add(tableViewAlumno, 1, 5);
         }
         });
@@ -110,6 +122,12 @@ public class CRUDNotas {
         
         hBoxCRUD.getChildren().add(gridPane);
         return hBoxCRUD;
+    }
+    
+    public void reporte(int idAlumno) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("idAlumno", idAlumno);
+        ReportGenerator.getInstance().generate(hashMap, "notas.jasper", "Notas de Bimestre");
     }
     
     public void actualizarObservableList() {
