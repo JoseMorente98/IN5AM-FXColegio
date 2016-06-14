@@ -77,4 +77,14 @@ public class ControladorCarrera {
         }
         return null;
     }
+    
+    public ArrayList<Carrera> search(String nombre){
+        ArrayList<Carrera> resultado = new ArrayList<>(); 
+        for(Carrera carrera: getArrayList()){
+             if(carrera.getNombre().toUpperCase().contains(nombre.toUpperCase())){
+                 resultado.add(carrera);
+             }
+         }
+         return resultado;
+    }
 }

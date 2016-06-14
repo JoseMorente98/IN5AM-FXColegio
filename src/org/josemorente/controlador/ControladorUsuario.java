@@ -80,7 +80,8 @@ public class ControladorUsuario {
     
     //Login Usuario 
     public Boolean autenticar(String nombre, String clave) {
-        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Usuario WHERE nombre = '" + nombre + "' AND clave = '" + clave + "';");
+        ResultSet resultSet = SQLDatabaseConnection.getInstance().query("SELECT * FROM Usuario "
+                + "WHERE nombre = '" + nombre + "' AND clave = '" + clave + "';");
         autenticar = Boolean.FALSE;
         try {
             while (resultSet.next()) {

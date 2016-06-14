@@ -30,7 +30,7 @@ import org.josemorente.controlador.ControladorUsuario;
  *
  * @author José Morente
  */
-public class CRUDUsuario {
+public class CRUDUsuario implements CRUDInterfaz {
     public static CRUDUsuario instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;

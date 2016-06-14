@@ -28,7 +28,7 @@ import org.josemorente.controlador.ControladorMateria;
  *
  * @author José Morente
  */
-public class CRUDMateria {
+public class CRUDMateria implements CRUDInterfaz {
     public static CRUDMateria instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
@@ -80,6 +80,9 @@ public class CRUDMateria {
         
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Materia");
+        textFieldBuscar.textProperty().addListener((newValue) -> {
+            actualizarTableBusqueda(textFieldBuscar.getText().trim());
+        });
         
         hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
@@ -183,6 +186,11 @@ public class CRUDMateria {
        
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorMateria.getInstance().getArrayList());
+    }
+    
+    public void actualizarTableBusqueda(String nombre) {
+        observableList = FXCollections.observableArrayList(ControladorMateria.getInstance().search(nombre));
+        tableViewMateria.setItems(observableList);
     }
 }
 

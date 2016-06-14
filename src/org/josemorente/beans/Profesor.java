@@ -5,20 +5,13 @@
  */
 package org.josemorente.beans;
 
-import java.util.Date;
-
 /**
  *
  * @author José Morente
  */
-public class Profesor {
+public class Profesor extends Persona{
      private int idProfesor;
-    private String nombres;
-    private String apellidos;
     private String dpi;
-    private int telefono;
-    private String direccion;
-    private Date fechaNacimiento;
     
     public Profesor() {    
     }
@@ -31,22 +24,6 @@ public class Profesor {
         this.idProfesor = idProfesor;
     }
 
-    public String getNombres() {
-        return nombres;
-    }
-
-    public void setNombres(String nombres) {
-        this.nombres = nombres;
-    }
-
-    public String getApellidos() {
-        return apellidos;
-    }
-
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
-    }
-
     public String getDpi() {
         return dpi;
     }
@@ -55,33 +32,4 @@ public class Profesor {
         this.dpi = dpi;
     }
 
-    public int getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    @Override
-    public String toString() {
-        String profesor = nombres + " " + apellidos;
-        return profesor;
-    }  
 }

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="453" leftMargin="71" rightMargin="71" topMargin="71" bottomMargin="71" uuid="6f063325-fa9e-4414-a91f-e29e7505c9a9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idAlumno" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH Boleta (Alumno, Asignatura, Bimestre, Valor) AS(
+SELECT
+	Alumno.nombres + ' ' + Alumno.apellidos AS Alumno,
+    Materia.nombre AS Asignatura,
+    Bimestre.nombre AS Bimestre,
+    ActividadMateriaBimestreAlumno.valor AS Valor
+FROM
+     ActividadMateriaBimestreAlumno
+	 INNER JOIN Alumno ON ActividadMateriaBimestreAlumno.idAlumno = Alumno.idAlumno
+	 INNER JOIN Materia ON ActividadMateriaBimestreAlumno.idMateria = Materia.idMateria
+	 INNER JOIN Bimestre ON ActividadMateriaBimestreAlumno.idBimestre = Bimestre.idBimestre
+	 WHERE ActividadMateriaBimestreAlumno.idAlumno = $P{idAlumno})
+	 SELECT * FROM Boleta
+	 PIVOT (SUM(Valor) FOR Bimestre IN ([I Bimestre], [II Bimestre], [III Bimestre], [IV Bimestre], [V Bimestre])) PVT]]>
+	</queryString>
+	<field name="Alumno" class="java.lang.String"/>
+	<field name="Asignatura" class="java.lang.String"/>
+	<field name="I Bimestre" class="java.lang.Integer"/>
+	<field name="II Bimestre" class="java.lang.Integer"/>
+	<field name="III Bimestre" class="java.lang.Integer"/>
+	<field name="IV Bimestre" class="java.lang.Integer"/>
+	<field name="V Bimestre" class="java.lang.Integer"/>
+	<group name="Asignatura">
+		<groupExpression><![CDATA[$F{Asignatura}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="97" y="20" width="264" height="59" uuid="7748eab3-70b8-4833-9312-2be542123c7b"/>
+				<imageExpression><![CDATA["C:\\Users\\josem\\Documents\\NetBeansProjects\\FXColegio\\src\\org\\josemorente\\recursos\\Titulo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="0" y="0" width="253" height="47" uuid="b981b783-efcc-4cd7-aba6-848f55cc135c"/>
+				<imageExpression><![CDATA["C:\\Users\\josem\\Documents\\NetBeansProjects\\FXColegio\\src\\org\\josemorente\\recursos\\KINAL.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="55" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="15" width="125" height="20" uuid="561665c9-b107-4fd3-aaa2-0226773a46ea"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Nombre del Alumno :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="125" y="15" width="208" height="20" uuid="8041e825-508a-494c-be33-0dfdb4e45665"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Alumno}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="11" y="35" width="431" height="20" uuid="23bd7357-3972-4167-a60c-50a26739a228"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="178" y="35" width="100" height="20" uuid="f185a047-7c35-4d62-a369-02caca599e7e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diversificado]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="380" y="0" width="62" height="20" uuid="a95259e1-0aa8-49a7-9f05-5c5d9b0cbde5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="313" y="0" width="67" height="20" uuid="25e3165f-ff9b-4ad1-8ea4-f89705942b6e"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="243" y="0" width="70" height="20" uuid="41580355-9f90-4771-94dc-3e57883ab329"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="178" y="0" width="65" height="20" uuid="53390e80-7d88-4328-a1ca-3d1abfec2621"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="111" y="0" width="67" height="20" uuid="4d6682c6-5717-4342-9f1c-e12548dfe6a0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="0" width="100" height="20" uuid="a02347e0-438f-4d8e-b673-d52a701242a7"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="11" y="0" width="100" height="20" uuid="86643a13-4c7f-4c7a-8183-997becd739fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Asignatura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="0" width="67" height="20" uuid="c292198a-f8ea-45f2-8c12-6a0c17b23721"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[I Bimestre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="0" width="65" height="20" uuid="a73fe21e-ed69-4b3f-8b2e-e30b0257cff9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[II Bimestre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="0" width="64" height="20" uuid="2f01caff-a45a-4efa-8671-1c0880e7ebce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[III Bimestre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="0" width="67" height="20" uuid="2b0500de-d08b-4af7-acc8-23626e1a38f8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IV Bimestre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="62" height="20" uuid="ea854c5b-7f42-4ce8-83cc-feb24a1babab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[V Bimestre]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement x="380" y="0" width="62" height="20" uuid="18597275-8cf8-4d3a-b380-6466bed521b6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="313" y="0" width="67" height="20" uuid="c70b66dd-93f3-4ec4-ab61-61af5787960d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="243" y="0" width="70" height="20" uuid="0e409d4e-820f-4057-84b6-27766ab7d180"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="178" y="0" width="65" height="20" uuid="f53a201e-5f15-4014-84c0-32c97a473268"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="111" y="0" width="67" height="20" uuid="53546e81-7308-413c-8de2-15d2197b9d0c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="11" y="0" width="100" height="20" uuid="31d194b5-9df3-4a96-83d0-ae413a62ec0a"/>
+			</rectangle>
+			<textField>
+				<reportElement x="11" y="0" width="100" height="20" uuid="2cf35ae3-d6a6-47fe-8a3c-64b7f4cd3611"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Asignatura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="67" height="20" uuid="b8ce594f-6b76-4c61-8878-344beb83b53e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{I Bimestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="0" width="65" height="20" uuid="658d3758-de56-4aa3-919d-310e5d40225d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{II Bimestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="0" width="70" height="20" uuid="dfc493e0-fbbd-461d-abfa-c6e5aebe4610"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{III Bimestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="0" width="67" height="20" uuid="62f3f2c2-caf8-44cb-9dfc-b5904f55c913"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{IV Bimestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="62" height="20" uuid="07a75cbb-fd4f-4221-82d8-65b0c8536366"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{V Bimestre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="333" y="34" width="80" height="20" uuid="f5146b71-cf7d-4bdb-b9b3-95334f92b77d"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="413" y="34" width="40" height="20" uuid="6d79e32d-7344-40f3-93e6-f37923ac6031"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.josemorente.beans.SeccionAcademica;
+import org.josemorente.beans.SeccionTecnica;
 import org.josemorente.database.SQLDatabaseConnection;
 
 /**
@@ -76,5 +77,16 @@ public class ControladorSeccionAcademica {
             }
         }
         return null;
+    }
+    
+    //Buscar Seccion Tecnica
+    public ArrayList<SeccionAcademica> search(String nombre){
+        ArrayList<SeccionAcademica> resultado = new ArrayList<>(); 
+        for(SeccionAcademica seccionAcademica: getArrayList()){
+             if(seccionAcademica.getNombre().toUpperCase().contains(nombre.toUpperCase())){
+                 resultado.add(seccionAcademica);
+             }
+         }
+         return resultado;
     }
 }

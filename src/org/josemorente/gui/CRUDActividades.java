@@ -83,17 +83,11 @@ private static CRUDActividades instance;
         
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Materia");
+        textFieldBuscar.textProperty().addListener((newValue) -> {
+            actualizarTableBusqueda(textFieldBuscar.getText().trim());
+        });
         
-        buttonBuscar = new Button("Buscar");
-        buttonBuscar.setId("buttonBuscar");
-        buttonBuscar.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        }); 
-        
-        hBoxBuscar.getChildren().addAll(textFieldBuscar, buttonBuscar);
+        hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
         
         hBoxButtons = new HBox(10);
@@ -110,6 +104,17 @@ private static CRUDActividades instance;
         
         buttonModificar = new Button("Modificar");
         buttonModificar.setId("buttonModificar");
+        buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                if (tableViewActividad.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, ModificarActividad.getInstance().getGridPane((Actividad) tableViewActividad.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
+            }
+        });
         
         buttonEliminar = new Button("Eliminar");
         buttonEliminar.setId("buttonEliminar");
@@ -134,6 +139,17 @@ private static CRUDActividades instance;
         
         buttonVer = new Button("Ver");
         buttonVer.setId("buttonVer");
+        buttonVer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hBoxCRUD.getChildren().clear();
+                if (tableViewActividad.getSelectionModel().getSelectedItem() != null) {
+                    hBoxCRUD.getChildren().addAll(gridPane, VerActividad.getInstance().getGridPane((Actividad) tableViewActividad.getSelectionModel().getSelectedItem()));
+                } else {
+                    hBoxCRUD.getChildren().add(gridPane);
+                }
+            }
+        });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
                 buttonVer);
@@ -189,6 +205,11 @@ private static CRUDActividades instance;
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorActividad.getInstance().getArrayList());
     }
+    
+    public void actualizarTableBusqueda(String nombre) {
+        observableList = FXCollections.observableArrayList(ControladorActividad.getInstance().search(nombre));
+        tableViewActividad.setItems(observableList);
+    }
 }
 
 class AgregarActividad {
@@ -233,7 +254,7 @@ class AgregarActividad {
         
         choiceBoxTipoActividad = new ChoiceBox();
         choiceBoxTipoActividad.getItems().addAll("Hoja de Trabajo", "Tarea", "Investigación", 
-                "Exámen Parcial", "PMA", "Exámen Bimestral", "Nota Final");
+                "Exámen Parcial", "PMA", "Exámen Bimestral");
         gridPane.add(choiceBoxTipoActividad, 1, 1, 2, 1);
         
         labelNombre = new Label("Nombre :");
@@ -279,4 +300,176 @@ class AgregarActividad {
         return gridPane;
     }
     
+}
+
+class ModificarActividad {
+    private static ModificarActividad instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelTipoActividad;
+    private ChoiceBox choiceBoxTipoActividad;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelPunteo;
+    private TextField textFieldPunteo;
+    private Button buttonModificar;
+    private Button buttonCerrar;
+    private int y = 0;
+
+    private ModificarActividad() {
+    }
+
+    public static ModificarActividad getInstance() {
+        if (instance == null) {
+            instance = new ModificarActividad();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Actividad actividad) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Agregar Materia");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelTipoActividad = new Label("Nombre :");
+        labelTipoActividad.setId("labels");
+        gridPane.add(labelTipoActividad, 0, 1);
+        
+        choiceBoxTipoActividad = new ChoiceBox();
+        choiceBoxTipoActividad.setValue(actividad.getTipoActividad());
+        choiceBoxTipoActividad.getItems().addAll("Hoja de Trabajo", "Tarea", "Investigación", 
+                "Exámen Parcial", "PMA", "Exámen Bimestral");
+        gridPane.add(choiceBoxTipoActividad, 1, 1, 2, 1);
+        
+        labelNombre = new Label("Nombre :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 2);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setText(actividad.getNombre());
+        textFieldNombre.setPromptText("Nombre de Actividad");
+        gridPane.add(textFieldNombre, 1, 2, 2, 1);
+        
+        labelPunteo = new Label("Valor de Actividad");
+        labelPunteo.setId("labels");
+        gridPane.add(labelPunteo, 0, 3);
+                
+        textFieldPunteo = new TextField();
+        String x = String.valueOf(actividad.getPunteo());
+        textFieldPunteo.setText(x);
+        textFieldPunteo.setPromptText("Punteo");
+        gridPane.add(textFieldPunteo, 1, 3, 2, 1);
+        
+        buttonModificar = new Button("Modificar");
+        buttonModificar.setId("buttonModificar");
+        buttonModificar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ControladorActividad.getInstance().modificarActividades(choiceBoxTipoActividad.getSelectionModel().getSelectedItem().toString(), 
+                        textFieldNombre.getText(), 
+                        y = Integer.parseInt(textFieldPunteo.getText()), 
+                        actividad.getIdActividad());
+                CRUDActividades.getInstance().reiniciarhBoxCRUD();
+                CRUDActividades.getInstance().actualizarTableViewItems();
+            }
+        });
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDActividades.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonModificar, 1, 4);
+        gridPane.add(buttonCerrar, 2, 4, 2, 1);
+        return gridPane;
+    }
+}
+
+class VerActividad {
+    private static VerActividad instance;
+    private GridPane gridPane;
+    private Text textTitulo;
+    private Label labelTipoActividad;
+    private TextField textFieldTipoActividad;
+    private Label labelNombre;
+    private TextField textFieldNombre;
+    private Label labelPunteo;
+    private TextField textFieldPunteo;
+    private Button buttonModificar;
+    private Button buttonCerrar;
+    private int y = 0;
+
+    private VerActividad() {
+    }
+
+    public static VerActividad getInstance() {
+        if (instance == null) {
+            instance = new VerActividad();
+        }
+        return instance;
+    }
+
+    public GridPane getGridPane(Actividad actividad) {
+        gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.setGridLinesVisible(false);
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
+        
+        textTitulo = new Text("Agregar Materia");
+        textTitulo.setId("titulo");
+        textTitulo.setFill(Color.WHITESMOKE);
+        gridPane.add(textTitulo, 0, 0);
+        
+        labelTipoActividad = new Label("Nombre :");
+        labelTipoActividad.setId("labels");
+        gridPane.add(labelTipoActividad, 0, 1);
+        
+        textFieldTipoActividad = new TextField();
+        textFieldTipoActividad.setText(actividad.getTipoActividad());
+        textFieldTipoActividad.setEditable(false);
+        gridPane.add(textFieldTipoActividad, 1, 1, 2, 1);
+        
+        labelNombre = new Label("Nombre :");
+        labelNombre.setId("labels");
+        gridPane.add(labelNombre, 0, 2);
+        
+        textFieldNombre = new TextField();
+        textFieldNombre.setText(actividad.getNombre());
+        textFieldNombre.setEditable(false);
+        gridPane.add(textFieldNombre, 1, 2, 2, 1);
+        
+        labelPunteo = new Label("Valor de Actividad");
+        labelPunteo.setId("labels");
+        gridPane.add(labelPunteo, 0, 3);
+                
+        textFieldPunteo = new TextField();
+        String x = String.valueOf(actividad.getPunteo());
+        textFieldPunteo.setText(x);
+        textFieldPunteo.setEditable(false);
+        gridPane.add(textFieldPunteo, 1, 3, 2, 1);
+        
+        buttonCerrar = new Button("Cerrar");
+        buttonCerrar.setId("buttonCerrar");
+        buttonCerrar.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                CRUDActividades.getInstance().reiniciarhBoxCRUD();
+            }
+        });
+        
+        gridPane.add(buttonCerrar, 1, 4, 2, 1);
+        return gridPane;
+    }
 }

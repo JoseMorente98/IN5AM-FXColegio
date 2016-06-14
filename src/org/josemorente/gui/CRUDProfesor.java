@@ -16,30 +16,23 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.josemorente.beans.Asignacion;
-import org.josemorente.beans.Materia;
 import org.josemorente.beans.Profesor;
-import org.josemorente.controlador.ControladorAsignacion;
-import org.josemorente.controlador.ControladorMateria;
 import org.josemorente.controlador.ControladorProfesor;
 
 /**
  *
  * @author José Morentes
  */
-public class CRUDProfesor {
+public class CRUDProfesor implements CRUDInterfaz {
     private static CRUDProfesor instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
@@ -95,6 +88,9 @@ public class CRUDProfesor {
         
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Profesor");
+        textFieldBuscar.textProperty().addListener((newValue) -> {
+            actualizarTableBusqueda(textFieldBuscar.getText().trim());
+        });
         
         hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
@@ -221,6 +217,10 @@ public class CRUDProfesor {
         observableList = FXCollections.observableArrayList(ControladorProfesor.getInstance().getArrayList());
     }
     
+    public void actualizarTableBusqueda(String nombres) {
+        observableList = FXCollections.observableArrayList(ControladorProfesor.getInstance().search(nombres));
+        tableViewProfesor.setItems(observableList);
+    }
 }
 
 class CrearProfesor {

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.josemorente.beans.Alumno;
+import org.josemorente.beans.Profesor;
 import org.josemorente.database.SQLDatabaseConnection;
 
 /**
@@ -87,5 +88,16 @@ public class ControladorAlumno {
             }
         }
         return null;
+    }
+    
+     //Buscar Alumno
+    public ArrayList<Alumno> search(String nombres){
+        ArrayList<Alumno> resultado = new ArrayList<>(); 
+        for(Alumno alumno: getArrayList()){
+             if(alumno.getNombres().toUpperCase().contains(nombres.toUpperCase())){
+                 resultado.add(alumno);
+             }
+         }
+         return resultado;
     }
 }

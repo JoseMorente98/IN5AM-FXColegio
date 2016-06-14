@@ -21,18 +21,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.josemorente.beans.Carrera;
 import org.josemorente.beans.Grado;
-import org.josemorente.beans.SeccionTecnica;
 import org.josemorente.controlador.ControladorGrado;
-import org.josemorente.controlador.ControladorMateria;
-import org.josemorente.controlador.ControladorSeccionTecnica;
 
 /**
  *
  * @author José Morente
  */
-public class CRUDGrado {
+public class CRUDGrado implements CRUDInterfaz {
     private static CRUDGrado instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
@@ -84,6 +80,9 @@ public class CRUDGrado {
         
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Grado");
+        textFieldBuscar.textProperty().addListener((newValue) -> {
+            actualizarTableBusqueda(textFieldBuscar.getText().trim());
+        });
         
         hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
@@ -185,6 +184,11 @@ public class CRUDGrado {
        
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorGrado.getInstance().getArrayList());
+    }
+    
+    public void actualizarTableBusqueda(String nombre) {
+        observableList = FXCollections.observableArrayList(ControladorGrado.getInstance().search(nombre));
+        tableViewGrado.setItems(observableList);
     }
 }
 

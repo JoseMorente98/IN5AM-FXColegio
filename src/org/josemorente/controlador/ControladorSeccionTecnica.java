@@ -77,4 +77,15 @@ public class ControladorSeccionTecnica {
         }
         return null;
     }
+    
+    //Buscar Seccion Tecnica
+    public ArrayList<SeccionTecnica> search(String nombre){
+        ArrayList<SeccionTecnica> resultado = new ArrayList<>(); 
+        for(SeccionTecnica seccionTecnica: getArrayList()){
+             if(seccionTecnica.getNombre().toUpperCase().contains(nombre.toUpperCase())){
+                 resultado.add(seccionTecnica);
+             }
+         }
+         return resultado;
+    }
 }

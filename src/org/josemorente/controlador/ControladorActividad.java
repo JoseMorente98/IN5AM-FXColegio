@@ -102,4 +102,13 @@ public class ControladorActividad {
         return arrayListMateria;
     }
     
+    public ArrayList<Actividad> search(String nombre){
+        ArrayList<Actividad> resultado = new ArrayList<>(); 
+        for(Actividad actividad: getArrayList()){
+             if(actividad.getNombre().toUpperCase().contains(nombre.toUpperCase())){
+                 resultado.add(actividad);
+             }
+         }
+         return resultado;
+    }
 }

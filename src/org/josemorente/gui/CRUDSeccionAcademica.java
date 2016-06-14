@@ -28,7 +28,7 @@ import org.josemorente.controlador.ControladorSeccionAcademica;
  *
  * @author José Morente
  */
-public class CRUDSeccionAcademica {
+public class CRUDSeccionAcademica implements CRUDInterfaz {
    public static CRUDSeccionAcademica instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
@@ -81,6 +81,9 @@ public class CRUDSeccionAcademica {
         
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Seccion");
+        textFieldBuscar.textProperty().addListener((newValue) -> {
+            actualizarTableBusqueda(textFieldBuscar.getText().trim());
+        });
         
         hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
@@ -157,7 +160,7 @@ public class CRUDSeccionAcademica {
         });
         
         hBoxButtons.getChildren().addAll(buttonNuevo, buttonModificar, buttonEliminar, buttonActualizar, 
-                buttonVer, buttonAtras);
+                buttonVer);
         gridPane.add(hBoxButtons, 0, 2);
         
         tableColumnIdSeccion = new TableColumn<>();
@@ -181,7 +184,7 @@ public class CRUDSeccionAcademica {
                 tableColumnDescripcion);
         
         gridPane.add(tableViewSeccionAcademica, 0, 3, 2, 1);
-       
+        gridPane.add(buttonAtras, 0, 4);
         hBoxCRUD.getChildren().add(gridPane);
         return hBoxCRUD;
     }
@@ -193,6 +196,11 @@ public class CRUDSeccionAcademica {
        
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorSeccionAcademica.getInstance().getArrayList());
+    }
+    
+    public void actualizarTableBusqueda(String nombre) {
+        observableList = FXCollections.observableArrayList(ControladorSeccionAcademica.getInstance().search(nombre));
+        tableViewSeccionAcademica.setItems(observableList);
     }
 }
 

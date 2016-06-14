@@ -23,13 +23,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.josemorente.beans.Carrera;
 import org.josemorente.controlador.ControladorCarrera;
-import org.josemorente.controlador.ControladorMateria;
 
 /**
  *
  * @author José Morente
  */
-public class CRUDCarrera {
+public class CRUDCarrera implements CRUDInterfaz{
     public static CRUDCarrera instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
@@ -81,6 +80,9 @@ public class CRUDCarrera {
         
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Carrera");
+        textFieldBuscar.textProperty().addListener((newValue) -> {
+            actualizarTableBusqueda(textFieldBuscar.getText().trim());
+        });
         
         hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
@@ -184,6 +186,11 @@ public class CRUDCarrera {
        
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorCarrera.getInstance().getArrayList());
+    }
+    
+    public void actualizarTableBusqueda(String nombre) {
+        observableList = FXCollections.observableArrayList(ControladorCarrera.getInstance().search(nombre));
+        tableViewCarrera.setItems(observableList);
     }
 }
 

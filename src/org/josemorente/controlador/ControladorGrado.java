@@ -77,4 +77,14 @@ public class ControladorGrado {
         }
         return null;
     }
+    
+    public ArrayList<Grado> search(String nombre){
+        ArrayList<Grado> resultado = new ArrayList<>(); 
+        for(Grado grado: getArrayList()){
+             if(grado.getNombre().toUpperCase().contains(nombre.toUpperCase())){
+                 resultado.add(grado);
+             }
+         }
+         return resultado;
+    }
 }

@@ -93,4 +93,15 @@ public class ControladorMateria {
         }
         return arrayListMateria;
     }
+    
+     //Buscar Materia
+    public ArrayList<Materia> search(String nombre){
+        ArrayList<Materia> resultado = new ArrayList<>(); 
+        for(Materia materia: getArrayList()){
+             if(materia.getNombre().toUpperCase().contains(nombre.toUpperCase())){
+                 resultado.add(materia);
+             }
+         }
+         return resultado;
+    }
 }

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.josemorente.beans.Materia;
 import org.josemorente.beans.Profesor;
+import org.josemorente.beans.SeccionTecnica;
 import org.josemorente.database.SQLDatabaseConnection;
 
 /**
@@ -91,4 +92,14 @@ public class ControladorProfesor {
         return null;
     }
     
+    //Buscar Profesor
+    public ArrayList<Profesor> search(String nombres){
+        ArrayList<Profesor> resultado = new ArrayList<>(); 
+        for(Profesor profesor: getArrayList()){
+             if(profesor.getNombres().toUpperCase().contains(nombres.toUpperCase())){
+                 resultado.add(profesor);
+             }
+         }
+         return resultado;
+    }
 }

@@ -57,6 +57,7 @@ public class SQLDatabaseConnection {
     }
     
     public Connection getConnection() {
+        conectar();
         return connection;
     }
     

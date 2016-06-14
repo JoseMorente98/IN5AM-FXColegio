@@ -101,7 +101,7 @@ public class CRUDNotas {
         tableViewAlumno.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                buttonNota = new Button("Reporte");
+                buttonNota = new Button("Boleta");
                 buttonNota.setId("buttonNota");
                 buttonNota.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
@@ -127,7 +127,7 @@ public class CRUDNotas {
     public void reporte(int idAlumno) {
         HashMap hashMap = new HashMap();
         hashMap.put("idAlumno", idAlumno);
-        ReportGenerator.getInstance().generate(hashMap, "notas.jasper", "Notas de Bimestre");
+        ReportGenerator.getInstance().generate(hashMap, "Boleta.jasper", "Notas de Bimestre");
     }
     
     public void actualizarObservableList() {

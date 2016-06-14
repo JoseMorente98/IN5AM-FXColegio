@@ -8,7 +8,6 @@ package org.josemorente.gui;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,13 +33,12 @@ import org.josemorente.beans.Grado;
 import org.josemorente.controlador.ControladorAlumno;
 import org.josemorente.controlador.ControladorCarrera;
 import org.josemorente.controlador.ControladorGrado;
-import org.josemorente.controlador.ControladorMateria;
 
 /**
  *
  * @author José Morente
  */
-public class CRUDAlumno {
+public class CRUDAlumno implements CRUDInterfaz {
     public static CRUDAlumno instance;
     private HBox hBoxCRUD;
     private GridPane gridPane;
@@ -98,6 +96,9 @@ public class CRUDAlumno {
         
         textFieldBuscar = new TextField();
         textFieldBuscar.setPromptText("Buscar Alumno");
+        textFieldBuscar.textProperty().addListener((newValue) -> {
+            actualizarTableBusqueda(textFieldBuscar.getText().trim());
+        });
         
         hBoxBuscar.getChildren().addAll(textFieldBuscar);
         gridPane.add(hBoxBuscar, 0, 1);
@@ -230,6 +231,11 @@ public class CRUDAlumno {
        
     public void actualizarObservableList() {
         observableList = FXCollections.observableArrayList(ControladorAlumno.getInstance().getArrayList());
+    }
+    
+    public void actualizarTableBusqueda(String nombres) {
+        observableList = FXCollections.observableArrayList(ControladorAlumno.getInstance().search(nombres));
+        tableViewAlumno.setItems(observableList);
     }
 }
 

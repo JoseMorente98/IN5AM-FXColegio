@@ -87,14 +87,6 @@ public class CRUDProfesorAsignacion {
         textTitulo.setFont(Font.font(Font.getDefault().getFamily(), 25));
         gridPane.add(textTitulo, 0, 0);
         
-        hBoxBuscar = new HBox(10);
-        
-        textFieldBuscar = new TextField();
-        textFieldBuscar.setPromptText("Buscar Asignación");
-        
-        hBoxBuscar.getChildren().addAll(textFieldBuscar);
-        gridPane.add(hBoxBuscar, 0, 1);
-        
         hBoxButtons = new HBox(10);
         
         buttonNuevo = new Button("Asignar");
